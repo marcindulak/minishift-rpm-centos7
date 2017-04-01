@@ -19,6 +19,8 @@
 # Build with debug info rpm
 %global with_debug 0
 # Run tests in check section
+# machine/drivers/azure/azureutil/azureutil.go:14:2: cannot find package "github.com/Azure/azure-sdk-for-go/arm/compute"
+# and even after github.com/Azure/azure-sdk-for-go/arm built
 # FAIL	github.com/docker/machine/cmd [build failed]
 %global with_check 0
 # Generate unit-test rpm
@@ -47,7 +49,7 @@ Release:        0.1.git%{shortcommit}%{?dist}
 Summary:        Machine management for a container-centric world
 License:        ASL 2.0
 URL:            https://%{provider_prefix}
-Source0:        https://%{provider_prefix}/archive/%{commit}/%{repo}-%{version}.tar.gz
+Source0:        https://%{provider_prefix}/archive/%{commit}/%{repo}-%{shortcommit}.tar.gz
 
 # e.g. el6 has ppc64 arch without gcc-go, so EA tag is required
 ExclusiveArch:  %{?go_arches:%{go_arches}}%{!?go_arches:%{ix86} x86_64 aarch64 %{arm}}
@@ -113,17 +115,17 @@ BuildRequires: golang(golang.org/x/crypto/ssh/terminal)
 BuildRequires: golang(golang.org/x/net/context)
 BuildRequires: golang(golang.org/x/oauth2)
 BuildRequires: golang(golang.org/x/oauth2/google)
-BuildRequires: golang(golang.org/x/sys/windows/registry)
+#BuildRequires: golang(golang.org/x/sys/windows/registry)  # missing
 BuildRequires: golang(google.golang.org/api/compute/v1)
 BuildRequires: golang(google.golang.org/api/googleapi)
 %endif
 
-Requires:      golang(github.com/Azure/azure-sdk-for-go/arm/compute)
-Requires:      golang(github.com/Azure/azure-sdk-for-go/arm/network)
-Requires:      golang(github.com/Azure/azure-sdk-for-go/arm/resources/resources)
-Requires:      golang(github.com/Azure/azure-sdk-for-go/arm/resources/subscriptions)
-Requires:      golang(github.com/Azure/azure-sdk-for-go/arm/storage)
-Requires:      golang(github.com/Azure/azure-sdk-for-go/storage)
+#Requires:      golang(github.com/Azure/azure-sdk-for-go/arm/compute)  # missing
+#Requires:      golang(github.com/Azure/azure-sdk-for-go/arm/network)  # missing
+#Requires:      golang(github.com/Azure/azure-sdk-for-go/arm/resources/resources)  # missing
+#Requires:      golang(github.com/Azure/azure-sdk-for-go/arm/resources/subscriptions)  # missing
+#Requires:      golang(github.com/Azure/azure-sdk-for-go/arm/storage)  # missing
+#Requires:      golang(github.com/Azure/azure-sdk-for-go/storage)  # missing
 Requires:      golang(github.com/Azure/go-autorest/autorest)
 Requires:      golang(github.com/Azure/go-autorest/autorest/azure)
 Requires:      golang(github.com/Azure/go-autorest/autorest/to)
@@ -166,7 +168,7 @@ Requires:      golang(golang.org/x/crypto/ssh/terminal)
 Requires:      golang(golang.org/x/net/context)
 Requires:      golang(golang.org/x/oauth2)
 Requires:      golang(golang.org/x/oauth2/google)
-Requires:      golang(golang.org/x/sys/windows/registry)
+#Requires:      golang(golang.org/x/sys/windows/registry)  # missing
 Requires:      golang(google.golang.org/api/compute/v1)
 Requires:      golang(google.golang.org/api/googleapi)
 
@@ -264,7 +266,7 @@ providing packages with %{import_path} prefix.
 %endif
 
 %prep
-%setup -q -n %{repo}-%{version}
+%setup -q -n %{repo}-%{commit}
 
 %build
 %install
