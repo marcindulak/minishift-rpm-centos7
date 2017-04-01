@@ -46,7 +46,7 @@ Release:        0.1.git%{shortcommit}%{?dist}
 Summary:        Package browser provides helpers to open files, readers, and urls in a browser window
 License:        BSD
 URL:            https://%{provider_prefix}
-Source0:        https://%{provider_prefix}/archive/%{commit}/%{repo}-%{commit}.tar.gz
+Source0:        https://%{provider_prefix}/archive/%{commit}/%{repo}-%{shortcommit}.tar.gz
 
 # e.g. el6 has ppc64 arch without gcc-go, so EA tag is required
 ExclusiveArch:  %{?go_arches:%{go_arches}}%{!?go_arches:%{ix86} x86_64 aarch64 %{arm}}

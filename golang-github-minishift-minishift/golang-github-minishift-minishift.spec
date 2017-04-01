@@ -20,7 +20,7 @@
 %global with_debug 0
 # Run tests in check section
 # minishift/pkg/minikube/cluster/cluster.go:44:2: cannot find package "gopkg.in/cheggaaa/pb.v1"
-%global with_check 0
+%global with_check 1
 # Generate unit-test rpm
 %global with_unit_test 1
 
@@ -38,7 +38,7 @@
 # https://github.com/minishift/minishift
 %global provider_prefix %{provider}.%{provider_tld}/%{project}/%{repo}
 %global import_path     %{provider_prefix}
-%global commit          250c9ed18c90b510223b17ed70ed44f79484ef58
+%global commit          e05dbec97583e9e15ec5aa6bc183f5b74288ff57
 %global shortcommit     %(c=%{commit}; echo ${c:0:7})
 
 Name:           golang-%{provider}-%{project}-%{repo}
@@ -320,6 +320,6 @@ export GOPATH=%{buildroot}/%{gopath}:%{gopath}
 %endif
 
 %changelog
-* Mon Mar 20 2017 Marcin Dulak <Marcin.Dulak@gmail.com> - 1.0.0-0.1.git250c9ed
+* Mon Mar 20 2017 Marcin Dulak <Marcin.Dulak@gmail.com> - 1.0.0-0.1.gite05dbec
 - First package for Fedora
 

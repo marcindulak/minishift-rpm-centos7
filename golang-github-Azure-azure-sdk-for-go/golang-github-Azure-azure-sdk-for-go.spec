@@ -49,7 +49,7 @@ Summary:        Microsoft Azure SDK for Go
 # - *No copyright* Apache (v2.0) at 'LICENSE'
 License:        ASL 2.0
 URL:            https://%{provider_prefix}
-Source0:        https://%{provider_prefix}/archive/%{commit}/%{repo}-%{version}-beta.tar.gz
+Source0:        https://%{provider_prefix}/archive/%{commit}/%{repo}-%{shortcommit}.tar.gz
 
 # e.g. el6 has ppc64 arch without gcc-go, so EA tag is required
 ExclusiveArch:  %{?go_arches:%{go_arches}}%{!?go_arches:%{ix86} x86_64 aarch64 %{arm}}

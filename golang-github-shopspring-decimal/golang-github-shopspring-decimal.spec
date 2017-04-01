@@ -46,7 +46,7 @@ Release:        0.1.git%{shortcommit}%{?dist}
 Summary:        Arbitrary-precision fixed-point decimal numbers in go
 License:        MIT
 URL:            https://%{provider_prefix}
-Source0:        https://%{provider_prefix}/archive/%{commit}/%{repo}-%{commit}.tar.gz
+Source0:        https://%{provider_prefix}/archive/%{commit}/%{repo}-%{shortcommit}.tar.gz
 
 # e.g. el6 has ppc64 arch without gcc-go, so EA tag is required
 ExclusiveArch:  %{?go_arches:%{go_arches}}%{!?go_arches:%{ix86} x86_64 aarch64 %{arm}}
