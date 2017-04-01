@@ -60,7 +60,8 @@ yum -y install "golang(github.com/DATA-DOG/godog)"
 yum -y install "golang(github.com/asaskevich/govalidator)"
 yum -y install "golang(github.com/blang/semver)"
 yum -y install "golang(github.com/docker/machine/libmachine)"
-yum -y install "golang(github.com/google/go-github/github)"  # https://bugzilla.redhat.com/show_bug.cgi?id=1430132
+#yum -y install "golang(github.com/google/go-github/github)"  # https://bugzilla.redhat.com/show_bug.cgi?id=1430132
+yum -y install "https://kojipkgs.fedoraproject.org//packages/golang-github-google-go-github/0/0.1.git553fda4.fc25/noarch/golang-github-google-go-github-devel-0-0.1.git553fda4.fc25.noarch.rpm"  # https://bugzilla.redhat.com/show_bug.cgi?id=1430132
 yum -y install "golang(github.com/inconshreveable/go-update)"
 yum -y install "golang(github.com/kardianos/osext)"
 yum -y install "golang(github.com/olekukonko/tablewriter)"
