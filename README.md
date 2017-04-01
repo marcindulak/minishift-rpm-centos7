@@ -14,6 +14,7 @@ Locally build RPMS
 It can be done using www.vagrantup.com:
 
         $ git clone https://github.com/marcindulak/minishift-rpm-centos7
+        $ cd minishift-rpm-centos7
         $ BOX='bento/fedora-25' vagrant up
 
         $ vagrant ssh -c "sudo su - -c 'yum -y install wget git rpm-build spectool createrepo'"
