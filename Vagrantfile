@@ -1,5 +1,5 @@
 # -*- mode: ruby -*-
-1;3409;0c# vi: set ft=ruby :
+# vi: set ft=ruby :
 
 BOX = ENV.fetch('BOX', 'bento/fedora-25')
 
