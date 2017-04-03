@@ -19,8 +19,7 @@
 # Build with debug info rpm
 %global with_debug 0
 # Run tests in check section
-# panic: open fixtures/system_hostname_get.xml: no such file or directory
-%global with_check 0
+%global with_check 1
 # Generate unit-test rpm
 %global with_unit_test 1
 
@@ -217,6 +216,20 @@ for file in $(find . -iname "*_test.go" | grep -v "vendor") ; do
         dirprefix=$(dirname $dirprefix)
     done
 done
+
+# xml fixtures used by tests
+for file in $(find . -iname "*.xml") ; do
+    dirprefix=$(dirname $file)
+    install -d -p %{buildroot}/%{gopath}/src/%{import_path}/$dirprefix
+    cp -pav $file %{buildroot}/%{gopath}/src/%{import_path}/$file
+    echo "%%{gopath}/src/%%{import_path}/$file" >> unit-test-devel.file-list
+
+    while [ "$dirprefix" != "." ]; do
+        echo "%%dir %%{gopath}/src/%%{import_path}/$dirprefix" >> devel.file-list
+        dirprefix=$(dirname $dirprefix)
+    done
+done
+
 %endif
 
 %if 0%{?with_devel}
