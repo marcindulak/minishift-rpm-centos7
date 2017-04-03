@@ -19,8 +19,7 @@
 # Build with debug info rpm
 %global with_debug 0
 # Run tests in check section
-# panic: open testdata/sample.old: no such file or directory
-%global with_check 0
+%global with_check 1
 # Generate unit-test rpm
 %global with_unit_test 1
 
@@ -53,7 +52,8 @@ Source0:        https://%{provider_prefix}/archive/%{commit}/%{repo}-%{shortcomm
 ExclusiveArch:  %{?go_arches:%{go_arches}}%{!?go_arches:%{ix86} x86_64 aarch64 %{arm}}
 # If go_compiler is not set to 1, there is no virtual provide. Use golang instead.
 BuildRequires:  %{?go_compiler:compiler(go-compiler)}%{!?go_compiler:golang}
-
+# needed by go test
+BuildRequires: bsdiff
 
 
 %description
@@ -138,6 +138,20 @@ for file in $(find . -iname "*_test.go") ; do
         dirprefix=$(dirname $dirprefix)
     done
 done
+
+# internal/binarydist/testdata used by tests
+for file in $(find internal/binarydist/testdata -type f) ; do
+    dirprefix=$(dirname $file)
+    install -d -p %{buildroot}/%{gopath}/src/%{import_path}/$dirprefix
+    cp -pav $file %{buildroot}/%{gopath}/src/%{import_path}/$file
+    echo "%%{gopath}/src/%%{import_path}/$file" >> unit-test-devel.file-list
+
+    while [ "$dirprefix" != "." ]; do
+        echo "%%dir %%{gopath}/src/%%{import_path}/$dirprefix" >> devel.file-list
+        dirprefix=$(dirname $dirprefix)
+    done
+done
+
 %endif
 
 %if 0%{?with_devel}
@@ -161,6 +175,7 @@ export GOPATH=%{buildroot}/%{gopath}:%{gopath}
 %gotest %{import_path}
 %gotest %{import_path}/internal/binarydist
 %gotest %{import_path}/internal/osext
+rm -f %{buildroot}/%{gopath}/src/%{import_path}/internal/binarydist/test.{new,old,patch}
 %endif
 
 #define license tag if not already defined
