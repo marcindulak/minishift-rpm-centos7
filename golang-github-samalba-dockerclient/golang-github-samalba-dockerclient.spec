@@ -67,14 +67,20 @@ BuildArch:     noarch
 %if 0%{?with_check} && ! 0%{?with_bundled}
 BuildRequires: golang(github.com/docker/go-units)
 BuildRequires: golang(github.com/stretchr/testify/mock)
-# Missing dependency
+# Dependencies not discovered by gofed
+BuildRequires: golang(github.com/docker/docker/pkg/ioutils)
+BuildRequires: golang(golang.org/x/net/context)
 BuildRequires: golang(github.com/Sirupsen/logrus)
+BuildRequires: golang(github.com/gorilla/mux)
 %endif
 
 Requires:      golang(github.com/docker/go-units)
 Requires:      golang(github.com/stretchr/testify/mock)
-# Missing dependency
-Requires:      golang(github.com/Sirupsen/logrus)
+# Dependencies not discovered by gofed
+Requires: golang(github.com/docker/docker/pkg/ioutils)
+Requires: golang(golang.org/x/net/context)
+Requires: golang(github.com/Sirupsen/logrus)
+Requires: golang(github.com/gorilla/mux)
 
 Provides:      golang(%{import_path}) = %{version}-%{release}
 Provides:      golang(%{import_path}/mockclient) = %{version}-%{release}

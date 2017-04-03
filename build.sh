@@ -33,6 +33,12 @@ yum -y install "golang(github.com/davecgh/go-spew/spew)"
 spectool -g -R golang-github-vmware-govmomi/golang-github-vmware-govmomi.spec
 rpmbuild -bb golang-github-vmware-govmomi/golang-github-vmware-govmomi.spec
 
+yum -y install "golang(github.com/docker/go-units)"
+yum -y install "golang(github.com/stretchr/testify/mock)"
+yum -y install "golang(github.com/docker/docker/pkg/ioutils)"
+yum -y install "golang(golang.org/x/net/context)"
+yum -y install "golang(github.com/Sirupsen/logrus)"
+yum -y install "golang(github.com/gorilla/mux)"
 spectool -g -R golang-github-samalba-dockerclient/golang-github-samalba-dockerclient.spec
 rpmbuild -bb golang-github-samalba-dockerclient/golang-github-samalba-dockerclient.spec
 
