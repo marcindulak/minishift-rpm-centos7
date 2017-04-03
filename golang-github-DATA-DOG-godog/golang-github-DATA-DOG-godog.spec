@@ -19,8 +19,7 @@
 # Build with debug info rpm
 %global with_debug 0
 # Run tests in check section
-# feature path "features" is not available
-%global with_check 0
+%global with_check 1
 # Generate unit-test rpm
 %global with_unit_test 1
 
@@ -38,7 +37,7 @@
 # https://github.com/DATA-DOG/godog
 %global provider_prefix %{provider}.%{provider_tld}/%{project}/%{repo}
 %global import_path     %{provider_prefix}
-%global commit          cf8fbb4ad0d5fab464a5c9b79abbcfbd7c27e85b
+%global commit          834d5841c70be12a7f9bcc974f5b14d9ca8babce
 %global shortcommit     %(c=%{commit}; echo ${c:0:7})
 
 Name:           golang-%{provider}-%{project}-%{repo}
@@ -143,6 +142,20 @@ for file in $(find . -iname "*_test.go") ; do
         dirprefix=$(dirname $dirprefix)
     done
 done
+
+# feature files used by tests
+for file in $(find . -iname "*.feature") ; do
+    dirprefix=$(dirname $file)
+    install -d -p %{buildroot}/%{gopath}/src/%{import_path}/$dirprefix
+    cp -pav $file %{buildroot}/%{gopath}/src/%{import_path}/$file
+    echo "%%{gopath}/src/%%{import_path}/$file" >> unit-test-devel.file-list
+
+    while [ "$dirprefix" != "." ]; do
+        echo "%%dir %%{gopath}/src/%%{import_path}/$dirprefix" >> devel.file-list
+        dirprefix=$(dirname $dirprefix)
+    done
+done
+
 %endif
 
 %if 0%{?with_devel}
@@ -187,6 +200,6 @@ export GOPATH=%{buildroot}/%{gopath}:%{gopath}
 %endif
 
 %changelog
-* Tue Mar 28 2017 Marcin Dulak <Marcin.Dulak@gmail.com> - 0.6.3-0.1.gitcf8fbb4
+* Tue Mar 28 2017 Marcin Dulak <Marcin.Dulak@gmail.com> - 0.6.3-0.1.git834d584
 - First package for Fedora
 
