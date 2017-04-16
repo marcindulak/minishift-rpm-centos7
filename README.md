@@ -8,7 +8,7 @@ Builds available at https://copr.fedorainfracloud.org/coprs/marcindulak/minishif
 
 
 ------------------
-Locally build RPMS
+Build RPMS locally
 ------------------
 
 It can be done using www.vagrantup.com:
@@ -23,7 +23,9 @@ It can be done using www.vagrantup.com:
         $ vagrant ssh -c "sudo su - -c 'echo baseurl=file:///root/rpmbuild/RPMS >> /etc/yum.repos.d/minishift.repo'"
         $ vagrant ssh -c "sudo su - -c 'echo gpgcheck=0 >> /etc/yum.repos.d/minishift.repo'"
 
-        $ vagrant ssh -c "sudo su - -c 'cd /vagrant&& bash build.sh'"
+Build RPM of de-bundled minishift library, and dependencies:
+
+        $ vagrant ssh -c "sudo su - -c 'cd /vagrant&& bash debundled.sh'"
 
 
 -------
