@@ -83,6 +83,8 @@ for import_path in %{import_paths};
 do
     dir=`basename $(echo ${import_path})`
     pushd $dir
+    #MDTMP TODO - need to build binaries for relevant packages here and install them
+    rm -rf vendor  # don't bundle what bundled packages bundle
     install -d -p %{buildroot}/%{gopath}/src/${import_path}/
     echo "%%dir %%{gopath}/src/${import_path}/." >> ../bundled.file-list
     # find all *.go but no *_test.go files and generate bundled.file-list
@@ -102,8 +104,9 @@ done
 popd
 
 # set up temporary build gopath, and put our directory there
-mkdir _build
-pushd _build
+mkdir build
+cp -rp addons cmd pkg scripts test build
+pushd build
 export GOPATH=%{gopath}
 export PATH="$PATH:$GOPATH/bin"
 popd
