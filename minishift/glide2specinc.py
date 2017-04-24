@@ -6,6 +6,11 @@ packages = yaml.load(stream)['import']
 def gopackage(package, operator, version):
     return 'golang(' + package + ') ' + operator + ' ' + version
 
+def import_path(package):
+    provider_full, username, project = package.split('/')
+    provider, provider_tld = provider_full.split('.')
+    return '{}.{}/{}/{}'.format(provider, provider_tld, username, project)
+
 def bundled_dependency(package, version, bundled_source_number=0):
     provider_full, username, project = package.split('/')
     provider, provider_tld = provider_full.split('.')
@@ -53,7 +58,7 @@ for entry in packages:
         subpackages = [package + '/' + subpackage for subpackage in entry['subpackages']]
     else:
         subpackages = [package]
-    if version == '':
+    if version == '':  # any version is acceptable
         dependency = []
         for subpackage in subpackages:
             dependency.append('BuildRequires:      ' + 'golang(' + subpackage + ')')
@@ -109,6 +114,7 @@ for entry in packages:
                       '%else']
         dependency.extend(bundled_dependency(package, version, bundled_source_number))
         dependency.append('%endif')
+        dependency.append('%global import_path_{:02d} {}'.format(bundled_source_number, import_path(package)))
         bundled_source_number = bundled_source_number + 1
     dependencies.append(dependency)
 

@@ -2,12 +2,12 @@
 pushd minishift
 rm -f glide.yaml
 wget -q https://raw.githubusercontent.com/minishift/minishift/master/glide.yaml
-# major.minor.release for github.com/jteeuwen/go-bindata
+# https://github.com/minishift/minishift/issues/814
 sed -i 's|version: ~3.0|version: ~3.0.7|' glide.yaml
+# https://github.com/marcindulak/minishift-rpm-centos7/issues/5
+sed -i 's|gopkg.in/cheggaaa/pb.v1|github.com/cheggaaa/pb|' glide.yaml
 yum -y install "python-yaml"
 python glide2specinc.py > ~/rpmbuild/SOURCES/glide2specinc.inc
-# https://github.com/marcindulak/minishift-rpm-centos7/issues/5
-sed -i 's|gopkg.in/cheggaaa/pb.v1|github.com/cheggaaa/pb|' ~/rpmbuild/SOURCES/glide2specinc.inc
 popd
 
 yum -y install "compiler(go-compiler)"

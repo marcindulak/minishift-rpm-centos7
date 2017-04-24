@@ -62,7 +62,6 @@ for source in %{sources};
 do
     cp -pv %{_sourcedir}/`basename $(echo ${source} | cut -d'#' -f2)` .
 done
-%quit
 
 
 %build
@@ -78,12 +77,34 @@ for dir in *-*;
 do
     mv -v ${dir} `echo ${dir} | rev | cut -d'-' -f2- | rev`
 done
+
+%global import_paths %{expand: %{lua: for i=10,18 do print("%{import_path_"..i.."} ") end}}
+for import_path in %{import_paths};
+do
+    dir=`basename $(echo ${import_path})`
+    pushd $dir
+    install -d -p %{buildroot}/%{gopath}/src/${import_path}/
+    echo "%%dir %%{gopath}/src/${import_path}/." >> ../bundled.file-list
+    # find all *.go but no *_test.go files and generate bundled.file-list
+    for file in $(find . \( -iname "*.go" -or -iname "*.s" \) \! -iname "*_test.go" -and -not -ipath "*vendor*") ; do
+	dirprefix=$(dirname $file)
+	install -d -p %{buildroot}/%{gopath}/src/${import_path}/$dirprefix
+	cp -pav $file %{buildroot}/%{gopath}/src/${import_path}/$file
+	echo "%%{gopath}/src/${import_path}/$file" >> ../bundled.file-list
+
+        while [ "$dirprefix" != "." ]; do
+            echo "%%dir %%{gopath}/src/${import_path}/$dirprefix" >> ../bundled.file-list
+            dirprefix=$(dirname $dirprefix)
+        done
+    done
+    popd
+done
 popd
 
 # set up temporary build gopath, and put our directory there
 mkdir _build
 pushd _build
-export GOPATH=$(pwd)
+export GOPATH=%{gopath}
 export PATH="$PATH:$GOPATH/bin"
 popd
 make
