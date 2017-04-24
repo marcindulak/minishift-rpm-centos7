@@ -57,7 +57,12 @@ do
     sed -i 's|gopkg.in/cheggaaa/pb.v1|github.com/cheggaaa/pb|' $file
 done
 # copy the sources
-cp -p %{expand: %{lua: for i=10,18 do print("%{SOURCE"..i.."} ") end}} .
+%global sources %{expand: %{lua: for i=10,18 do print("%{SOURCE"..i.."} ") end}}
+for source in %{sources};
+do
+    cp -pv %{_sourcedir}/`basename $(echo ${source} | cut -d'#' -f2)` .
+done
+%quit
 
 
 %build
