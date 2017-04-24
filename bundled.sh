@@ -1,12 +1,12 @@
 # generate current minishift dependencies
 pushd minishift
 wget -q https://raw.githubusercontent.com/minishift/minishift/master/glide.yaml
+# major.minor.release for github.com/jteeuwen/go-bindata
+sed -i 's|version: ~3.0|version: ~3.0.7|' glide.yaml
 yum -y install "python-yaml"
 python glide2specinc.py > ~/rpmbuild/SOURCES/glide2specinc.inc
 # https://github.com/marcindulak/minishift-rpm-centos7/issues/5
 sed -i 's|gopkg.in/cheggaaa/pb.v1|github.com/cheggaaa/pb|' ~/rpmbuild/SOURCES/glide2specinc.inc
-# major.minor.release for github.com/jteeuwen/go-bindata
-sed -i 's|v3.0|v3.0.7|' ~/rpmbuild/SOURCES/glide2specinc.inc
 popd
 
 yum -y install "compiler(go-compiler)"
@@ -54,7 +54,6 @@ yum -y install "golang(golang.org/x/oauth2)"
 yum -y install "golang(golang.org/x/crypto/ssh)"
 yum -y install "golang(github.com/cheggaaa/pb)"
 
-pushd minishift
 # download the dependencies
 wget -q https://github.com/docker/machine/archive/v0.9.0.tar.gz -P ~/rpmbuild/SOURCES/
 wget -q https://github.com/mitchellh/mapstructure/archive/db1efb556f84b25a0a13a04aad883943538ad2e0/mapstructure-db1efb5.tar.gz -P ~/rpmbuild/SOURCES/  # TODO
@@ -68,5 +67,6 @@ wget -q https://github.com/golang/glog/archive/335da9dda11408a34b64344f82e9c0377
 
 wget -q https://github.com/minishift/minishift/archive/cebec68fcf03ae5b5a9c0b808178b542c17215a7/minishift-cebec68.tar.gz -P ~/rpmbuild/SOURCES/
 
+pushd minishift
 rpmbuild -bb minishift.spec  # broken build stage
 
