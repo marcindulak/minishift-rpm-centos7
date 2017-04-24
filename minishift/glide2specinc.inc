@@ -116,7 +116,7 @@ BuildRequires:      golang(golang.org/x/crypto/ssh)
 BuildRequires:      golang(golang.org/x/oauth2)
 
 
-BuildRequires:      golang(gopkg.in/cheggaaa/pb.v1)
+BuildRequires:      golang(github.com/cheggaaa/pb)
 
 
 # github.com/asaskevich/govalidator
