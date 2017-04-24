@@ -1,5 +1,6 @@
 # generate current minishift dependencies
 pushd minishift
+rm -f glide.yaml
 wget -q https://raw.githubusercontent.com/minishift/minishift/master/glide.yaml
 # major.minor.release for github.com/jteeuwen/go-bindata
 sed -i 's|version: ~3.0|version: ~3.0.7|' glide.yaml
@@ -55,17 +56,12 @@ yum -y install "golang(golang.org/x/crypto/ssh)"
 yum -y install "golang(github.com/cheggaaa/pb)"
 
 # download the dependencies
-wget -q https://github.com/docker/machine/archive/v0.9.0.tar.gz -P ~/rpmbuild/SOURCES/
-wget -q https://github.com/mitchellh/mapstructure/archive/db1efb556f84b25a0a13a04aad883943538ad2e0/mapstructure-db1efb5.tar.gz -P ~/rpmbuild/SOURCES/  # TODO
-wget -q https://github.com/spf13/viper/archive/382f87b929b84ce13e9c8a375a4b217f224e6c65/viper-382f87b.tar.gz -P ~/rpmbuild/SOURCES/  # TODO
-wget -q https://github.com/blang/semver/archive/v3.5.0.tar.gz -P ~/rpmbuild/SOURCES/  # TODO
-wget -q https://github.com/pkg/errors/archive/v0.8.0.tar.gz -P ~/rpmbuild/SOURCES/  # TODO
-wget -q https://github.com/jteeuwen/go-bindata/archive/v3.0.7.tar.gz -P ~/rpmbuild/SOURCES/  # TODO
-wget -q https://github.com/asaskevich/govalidator/archive/v5.tar.gz -P ~/rpmbuild/SOURCES/
-wget -q https://github.com/DATA-DOG/godog/archive/v0.6.2.tar.gz -P ~/rpmbuild/SOURCES/  # TODO
-wget -q https://github.com/golang/glog/archive/335da9dda11408a34b64344f82e9c03779b71673/glog-335da9d.tar.gz -P ~/rpmbuild/SOURCES/  # TODO
-
-wget -q https://github.com/minishift/minishift/archive/cebec68fcf03ae5b5a9c0b808178b542c17215a7/minishift-cebec68.tar.gz -P ~/rpmbuild/SOURCES/
+IFS_SAVE=$IFS
+IFS='\n'
+for wget in `grep wget glide2specinc.inc`; do cmd=`echo $wget | tr -d '#'`&& eval $cmd; done
+IFS=$IFS_SAVE
+wget -q https://github.com/minishift/minishift/archive/cebec68fcf03ae5b5a9c0b808178b542c17215a7/minishift-cebec68.tar.gz
+mv -v *.tar.gz ~/rpmbuild/SOURCES
 
 pushd minishift
 rpmbuild -bb minishift.spec  # broken build stage

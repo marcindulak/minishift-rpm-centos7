@@ -22,17 +22,22 @@ def bundled_dependency(package, version, bundled_source_number=0):
         shortcommit = commit[:7]
         # https://github.com/blang/semver/archive/4a1e882c79dcf4ec00d2e29fac74b9c8938d5052.zip
         # https://%{provider_prefix}/archive/%{commit}/%{repo}-%{shortcommit}.tar.gz
-        url = 'Source{:02d}:           https://github.com/{}/{}/archive/{}/{}-{}.tar.gz'.format(
-            bundled_source_number, username, project, commit, project, shortcommit)
+        source = 'https://github.com/{}/{}/archive/{}/{}-{}.tar.gz'.format(
+            username, project, commit, project, shortcommit)
+        uri = 'Source{:02d}:           {}'.format(bundled_source_number, source)
+        wget = '# wget -q {}'.format(source)
     else:
         # https://github.com/blang/semver/archive/v3.5.0.tar.gz
         if version.startswith('v'):
             versiontag = version
         else:
             versiontag = 'v' + version
-        url = 'Source{:02d}:           https://github.com/{}/{}/archive/{}.tar.gz'.format(
-            bundled_source_number, username, project, versiontag)
-    ret.append(url)
+        source = 'https://github.com/{}/{}/archive/{}.tar.gz#{}-{}.tar.gz'.format(
+            username, project, versiontag, project, version)
+        uri = 'Source{:02d}:           {}'.format(bundled_source_number, source)
+        wget = '# wget -q {} -O {}'.format(source.split('#')[0], source.split('#')[1])
+    ret.append(uri)
+    ret.append(wget)
     return ret
 
 # Any versioned golang package is considered a bundled dependency
@@ -96,13 +101,11 @@ for entry in packages:
                         dependency.append(gopackage(subpackage, '>=', version) + ', ' +
                                           gopackage(subpackage, '<', major + '.' + str(int(minor) + 1) + '.' + str(0)))
                 else:
-                    dependency = []
-                    for subpackage in subpackages:
-                        dependency.append(gopackage(package, '=', version))
+                    dependency.append(gopackage(package, '=', version))
         # handle bundled dependencies
         dependency = ['# {}'.format(package),
                       '%if ! 0%{?with_bundled}',
-                      'BuildRequires:      ' + dependency[0],  # this is the root of the package
+                      '\n'.join(['BuildRequires:      ' + subpackage for subpackage in dependency]),
                       '%else']
         dependency.extend(bundled_dependency(package, version, bundled_source_number))
         dependency.append('%endif')
