@@ -40,6 +40,15 @@ Source0:        https://%{provider_prefix}/archive/%{commit}/%{repo}-%{shortcomm
 Source1:        glide2specinc.inc
 %include        %{SOURCE1}
 
+BuildRequires:  go-bindata
+BuildRequires:  golang(github.com/fsnotify/fsnotify)
+BuildRequires:  golang(github.com/hashicorp/hcl)
+BuildRequires:  golang(github.com/pborman/uuid)
+BuildRequires:  golang(github.com/pelletier/go-toml)
+BuildRequires:  golang(github.com/spf13/afero)
+BuildRequires:  golang(github.com/spf13/jWalterWeatherman)
+
+
 # e.g. el6 has ppc64 arch without gcc-go, so EA tag is required
 ExclusiveArch:  %{?go_arches:%{go_arches}}%{!?go_arches:%{ix86} x86_64 aarch64 %{arm}}
 # If go_compiler is not set to 1, there is no virtual provide. Use golang instead.
@@ -51,23 +60,22 @@ BuildRequires:  %{?go_compiler:compiler(go-compiler)}%{!?go_compiler:golang}
 
 %prep
 %setup -q -n %{repo}-%{commit}
+
 # https://github.com/marcindulak/minishift-rpm-centos7/issues/5
 for file in `find . -type f`;
 do
     sed -i 's|gopkg.in/cheggaaa/pb.v1|github.com/cheggaaa/pb|' $file
 done
+
 # copy the sources
 %global sources %{expand: %{lua: for i=10,18 do print("%{SOURCE"..i.."} ") end}}
 for source in %{sources};
 do
     cp -pv %{_sourcedir}/`basename $(echo ${source} | cut -d'#' -f2)` .
 done
-
-
-%build
-mkdir vendor
-pushd vendor
-# untar
+# untar the sources under the directory "bundled"
+mkdir bundled
+pushd bundled
 for tarball in ../*.tar.gz;
 do
     tar zxf ${tarball}
@@ -77,21 +85,49 @@ for dir in *-*;
 do
     mv -v ${dir} `echo ${dir} | rev | cut -d'-' -f2- | rev`
 done
+popd
 
+# https://github.com/minishift/minishift/issues/827
+for file in `find . -type f`;
+do
+    sed -i 's|jwalterweatherman|jWalterWeatherman|' $file
+done
+
+# prepare GOPATH
+mkdir -p ./{bin,pkg,src}
+export GOPATH=`pwd`
+#export PATH=$PATH:$GOPATH/bin
+
+#!!!MDTMP: A terrible hack - minishift/Makefile uses GOPATH for two purposes: 1. GOPATH pointing to to packages locations, 2. GOPATH in the destination path of minishift target binary
+rm -rfv /usr/share/gocode/src/github.com/minishift
+pushd src
+for dir in `find /usr/share/gocode/src -maxdepth 1 -mindepth 1 -type d`;
+do
+    ln -s $dir
+done
+popd
+
+mkdir -p src/github.com/minishift/minishift
+shopt -s extglob
+mv -f !(src) src/github.com/minishift/minishift
+pushd $GOPATH/src/github.com/minishift/minishift
+# install budled packages under vendor directory
+mkdir -v vendor
+export VENDOR=$GOPATH/src/github.com/minishift/minishift/vendor
+pushd bundled
 %global import_paths %{expand: %{lua: for i=10,18 do print("%{import_path_"..i.."} ") end}}
 for import_path in %{import_paths};
 do
     dir=`basename $(echo ${import_path})`
     pushd $dir
-    #MDTMP TODO - need to build binaries for relevant packages here and install them
-    rm -rf vendor  # don't bundle what bundled packages bundle
-    install -d -p %{buildroot}/%{gopath}/src/${import_path}/
+    rm -rf bundled  # don't bundle what bundled packages bundle
+    install -d -p $VENDOR/${import_path}/
     echo "%%dir %%{gopath}/src/${import_path}/." >> ../bundled.file-list
     # find all *.go but no *_test.go files and generate bundled.file-list
-    for file in $(find . \( -iname "*.go" -or -iname "*.s" \) \! -iname "*_test.go" -and -not -ipath "*vendor*") ; do
+    for file in $(find . \( -iname "*.go" -or -iname "*.s" \) \! -iname "*_test.go" -and -not -ipath "*bundled*") ; do
 	dirprefix=$(dirname $file)
-	install -d -p %{buildroot}/%{gopath}/src/${import_path}/$dirprefix
-	cp -pav $file %{buildroot}/%{gopath}/src/${import_path}/$file
+	install -d -p $VENDOR/${import_path}/$dirprefix
+	cp -pav $file $VENDOR/${import_path}/$file
 	echo "%%{gopath}/src/${import_path}/$file" >> ../bundled.file-list
 
         while [ "$dirprefix" != "." ]; do
@@ -103,14 +139,12 @@ do
 done
 popd
 
-# set up temporary build gopath, and put our directory there
-mkdir build
-cp -rp addons cmd pkg scripts test build
-pushd build
-export GOPATH=%{gopath}
-export PATH="$PATH:$GOPATH/bin"
-popd
+%build
+cd src/github.com/minishift/minishift
+# skip go get of go-bindata - we use the RPM
+sed -i 's|go get -u github.com/jteeuwen/go-bindata/...|echo skipped go-bindata|' Makefile
 make
+%quit
 
 %install
 
