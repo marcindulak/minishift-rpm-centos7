@@ -64,6 +64,7 @@ IFS=$IFS_SAVE
 wget -q https://github.com/minishift/minishift/archive/cebec68fcf03ae5b5a9c0b808178b542c17215a7/minishift-cebec68.tar.gz
 mv -v *.tar.gz ~/rpmbuild/SOURCES
 
+yum -y install go-bindata
 yum -y install "golang(github.com/fsnotify/fsnotify)"
 yum -y install "golang(github.com/hashicorp/hcl)"
 yum -y install "golang(github.com/pborman/uuid)"
