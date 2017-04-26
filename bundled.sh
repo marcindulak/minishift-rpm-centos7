@@ -70,6 +70,19 @@ yum -y install "golang(github.com/pborman/uuid)"
 yum -y install "golang(github.com/pelletier/go-toml)"
 yum -y install "golang(github.com/spf13/afero)"
 yum -y install "golang(github.com/spf13/jWalterWeatherman)"
+yum -y install docker-devel
+
+yum -y install "golang(github.com/docker/go-units)"
+yum -y install "golang(github.com/stretchr/testify/mock)"
+yum -y install "golang(github.com/docker/docker/pkg/ioutils)"
+yum -y install "golang(golang.org/x/net/context)"
+yum -y install "golang(github.com/Sirupsen/logrus)"
+yum -y install "golang(github.com/gorilla/mux)"
+spectool -g -R golang-github-samalba-dockerclient/golang-github-samalba-dockerclient.spec
+rpmbuild -bb golang-github-samalba-dockerclient/golang-github-samalba-dockerclient.spec
+
+createrepo ~/rpmbuild/RPMS&& yum clean all --enablerepo=minishift --disablerepo='*'
+yum -y install "golang(github.com/samalba/dockerclient)"
 
 #rpmbuild -bb minishift.spec  # broken build stage
 

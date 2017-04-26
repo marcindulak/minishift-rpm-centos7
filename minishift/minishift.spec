@@ -124,7 +124,7 @@ do
     install -d -p $VENDOR/${import_path}/
     echo "%%dir %%{gopath}/src/${import_path}/." >> ../bundled.file-list
     # find all *.go but no *_test.go files and generate bundled.file-list
-    for file in $(find . \( -iname "*.go" -or -iname "*.s" \) \! -iname "*_test.go" -and -not -ipath "*bundled*") ; do
+    for file in $(find . \( -iname "*.go" -or -iname "*.s" \) \! -iname "*_test.go" -and -not -ipath "*vendor*") ; do
 	dirprefix=$(dirname $file)
 	install -d -p $VENDOR/${import_path}/$dirprefix
 	cp -pav $file $VENDOR/${import_path}/$file
@@ -140,6 +140,7 @@ done
 popd
 
 %build
+export GOPATH=`pwd`
 cd src/github.com/minishift/minishift
 # skip go get of go-bindata - we use the RPM
 sed -i 's|go get -u github.com/jteeuwen/go-bindata/...|echo skipped go-bindata|' Makefile
