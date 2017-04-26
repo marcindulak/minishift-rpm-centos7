@@ -55,15 +55,6 @@ yum -y install "golang(golang.org/x/oauth2)"
 yum -y install "golang(golang.org/x/crypto/ssh)"
 yum -y install "golang(github.com/cheggaaa/pb)"
 
-# download the dependencies
-pushd minishift
-IFS_SAVE=$IFS
-IFS=$'\n'
-for wget in `grep wget  ~/rpmbuild/SOURCES/glide2specinc.inc`; do cmd=`echo $wget | tr -d '#'`&& eval $cmd; done
-IFS=$IFS_SAVE
-wget -q https://github.com/minishift/minishift/archive/cebec68fcf03ae5b5a9c0b808178b542c17215a7/minishift-cebec68.tar.gz
-mv -v *.tar.gz ~/rpmbuild/SOURCES
-
 yum -y install go-bindata
 yum -y install "golang(github.com/fsnotify/fsnotify)"
 yum -y install "golang(github.com/hashicorp/hcl)"
@@ -84,6 +75,15 @@ rpmbuild -bb golang-github-samalba-dockerclient/golang-github-samalba-dockerclie
 
 createrepo ~/rpmbuild/RPMS&& yum clean all --enablerepo=minishift --disablerepo='*'
 yum -y install "golang(github.com/samalba/dockerclient)"
+
+# download the dependencies
+pushd minishift
+IFS_SAVE=$IFS
+IFS=$'\n'
+for wget in `grep wget  ~/rpmbuild/SOURCES/glide2specinc.inc`; do cmd=`echo $wget | tr -d '#'`&& eval $cmd; done
+IFS=$IFS_SAVE
+wget -q https://github.com/minishift/minishift/archive/cebec68fcf03ae5b5a9c0b808178b542c17215a7/minishift-cebec68.tar.gz
+mv -v *.tar.gz ~/rpmbuild/SOURCES
 
 #rpmbuild -bb minishift.spec  # broken build stage
 
