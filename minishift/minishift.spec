@@ -140,6 +140,7 @@ done
 popd
 
 %build
+export GOPATH=`pwd`
 cd src/github.com/minishift/minishift
 # skip go get of go-bindata - we use the RPM
 sed -i 's|go get -u github.com/jteeuwen/go-bindata/...|echo skipped go-bindata|' Makefile
