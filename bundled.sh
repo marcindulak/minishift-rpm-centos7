@@ -69,7 +69,7 @@ yum -y install "golang(github.com/hashicorp/hcl)"
 yum -y install "golang(github.com/pborman/uuid)"
 yum -y install "golang(github.com/pelletier/go-toml)"
 yum -y install "golang(github.com/spf13/afero)"
-yum -y install "golang(github.com/spf13/jwalterweatherman)"
+yum -y install "golang(github.com/spf13/jWalterWeatherman)"
 
 #rpmbuild -bb minishift.spec  # broken build stage
 
