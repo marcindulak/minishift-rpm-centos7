@@ -14,7 +14,7 @@ def import_path(package):
 def bundled_dependency(package, version, bundled_source_number=0):
     provider_full, username, project = package.split('/')
     provider, provider_tld = provider_full.split('.')
-    ret = ['# Provides:           bundled({}) = {}'.format(package, version)]
+    ret = ['# Provides:           bundled(golang({})) = {}'.format(package, version)]
     if len(version) == 40:  # test for sha1
         try:
             int(version, 16)

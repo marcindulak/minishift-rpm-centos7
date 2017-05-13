@@ -19,8 +19,7 @@
 # Build with debug info rpm
 %global with_debug 0
 # Run tests in check section
-# example_copy_test.go:12:2: cannot find package "gopkg.in/cheggaaa/pb.v1"
-%global with_check 0
+%global with_check 1
 # Generate unit-test rpm
 %global with_unit_test 1
 
@@ -33,18 +32,18 @@
 
 %global provider        github
 %global provider_tld    com
-%global project         cheggaaa
-%global repo            pb
-# https://github.com/cheggaaa/pb
+%global project         magiconair
+%global repo            properties
+# https://github.com/magiconair/properties
 %global provider_prefix %{provider}.%{provider_tld}/%{project}/%{repo}
 %global import_path     %{provider_prefix}
-%global commit          b65a1501e5c5bc2d1c1a062cbf7bcbfac2510177
+%global commit          51463bfca2576e06c62a8504b5c0f06d61312647
 %global shortcommit     %(c=%{commit}; echo ${c:0:7})
 
 Name:           golang-%{provider}-%{project}-%{repo}
-Version:        1.0.15
+Version:        9
 Release:        0.1.git%{shortcommit}%{?dist}
-Summary:        Console progress bar for Golang
+Summary:        Java properties scanner for Go
 License:        BSD
 URL:            https://%{provider_prefix}
 Source0:        https://%{provider_prefix}/archive/%{commit}/%{repo}-%{shortcommit}.tar.gz
@@ -65,12 +64,11 @@ Summary:       %{summary}
 BuildArch:     noarch
 
 %if 0%{?with_check} && ! 0%{?with_bundled}
-BuildRequires: golang(github.com/mattn/go-runewidth)
 %endif
 
-Requires:      golang(github.com/mattn/go-runewidth)
 
 Provides:      golang(%{import_path}) = %{version}-%{release}
+Provides:      golang(%{import_path}/assert) = %{version}-%{release}
 
 %description devel
 %{summary}
@@ -92,12 +90,8 @@ Summary:         Unit tests for %{name} package
 Requires:        %{name}-devel = %{version}-%{release}
 
 %if 0%{?with_check} && ! 0%{?with_bundled}
-BuildRequires: golang(github.com/fatih/color)
-BuildRequires: golang(github.com/mattn/go-colorable)
 %endif
 
-Requires:      golang(github.com/fatih/color)
-Requires:      golang(github.com/mattn/go-colorable)
 
 %description unit-test-devel
 %{summary}
@@ -165,6 +159,7 @@ export GOPATH=%{buildroot}/%{gopath}:%{gopath}
 %endif
 
 %gotest %{import_path}
+%gotest %{import_path}/assert
 %endif
 
 #define license tag if not already defined
@@ -174,17 +169,17 @@ export GOPATH=%{buildroot}/%{gopath}:%{gopath}
 %if 0%{?with_devel}
 %files devel -f devel.file-list
 %license LICENSE
-%doc README.md
+%doc README.md CHANGELOG.md
 %dir %{gopath}/src/%{provider}.%{provider_tld}/%{project}
 %endif
 
 %if 0%{?with_unit_test} && 0%{?with_devel}
 %files unit-test-devel -f unit-test-devel.file-list
 %license LICENSE
-%doc README.md
+%doc README.md CHANGELOG.md
 %endif
 
 %changelog
-* Mon Apr 24 2017 Marcin Dulak <Marcin.Dulak@gmail.com> - 1.0.15-0.1.gitb65a150
+* Mon May 12 2017 Marcin Dulak <Marcin.Dulak@gmail.com> - 9-0.1.git51463bf
 - First package for Fedora
 

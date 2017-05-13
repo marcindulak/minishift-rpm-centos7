@@ -19,7 +19,7 @@
 # Build with debug info rpm
 %global with_debug 0
 # Run tests in check section
-# example_copy_test.go:12:2: cannot find package "gopkg.in/cheggaaa/pb.v1"
+# table_test.go:70: open test_info.csv: no such file or directory
 %global with_check 0
 # Generate unit-test rpm
 %global with_unit_test 1
@@ -33,19 +33,19 @@
 
 %global provider        github
 %global provider_tld    com
-%global project         cheggaaa
-%global repo            pb
-# https://github.com/cheggaaa/pb
+%global project         olekukonko
+%global repo            tablewriter
+# https://github.com/olekukonko/tablewriter
 %global provider_prefix %{provider}.%{provider_tld}/%{project}/%{repo}
 %global import_path     %{provider_prefix}
-%global commit          b65a1501e5c5bc2d1c1a062cbf7bcbfac2510177
+%global commit          febf2d34b54a69ce7530036c7503b1c9fbfdf0bb
 %global shortcommit     %(c=%{commit}; echo ${c:0:7})
 
 Name:           golang-%{provider}-%{project}-%{repo}
-Version:        1.0.15
+Version:        1
 Release:        0.1.git%{shortcommit}%{?dist}
-Summary:        Console progress bar for Golang
-License:        BSD
+Summary:        ASCII table in golang
+License:        MIT
 URL:            https://%{provider_prefix}
 Source0:        https://%{provider_prefix}/archive/%{commit}/%{repo}-%{shortcommit}.tar.gz
 
@@ -92,12 +92,8 @@ Summary:         Unit tests for %{name} package
 Requires:        %{name}-devel = %{version}-%{release}
 
 %if 0%{?with_check} && ! 0%{?with_bundled}
-BuildRequires: golang(github.com/fatih/color)
-BuildRequires: golang(github.com/mattn/go-colorable)
 %endif
 
-Requires:      golang(github.com/fatih/color)
-Requires:      golang(github.com/mattn/go-colorable)
 
 %description unit-test-devel
 %{summary}
@@ -173,18 +169,16 @@ export GOPATH=%{buildroot}/%{gopath}:%{gopath}
 
 %if 0%{?with_devel}
 %files devel -f devel.file-list
-%license LICENSE
-%doc README.md
+%doc README.md LICENCE.md
 %dir %{gopath}/src/%{provider}.%{provider_tld}/%{project}
 %endif
 
 %if 0%{?with_unit_test} && 0%{?with_devel}
 %files unit-test-devel -f unit-test-devel.file-list
-%license LICENSE
-%doc README.md
+%doc README.md LICENCE.md
 %endif
 
 %changelog
-* Mon Apr 24 2017 Marcin Dulak <Marcin.Dulak@gmail.com> - 1.0.15-0.1.gitb65a150
+* Mon May 12 2017 Marcin Dulak <Marcin.Dulak@gmail.com> - 1-0.1.gitfebf2d3
 - First package for Fedora
 

@@ -19,8 +19,8 @@
 # Build with debug info rpm
 %global with_debug 0
 # Run tests in check section
-# example_copy_test.go:12:2: cannot find package "gopkg.in/cheggaaa/pb.v1"
-%global with_check 0
+# viper.go:563: undefined: cast.ToInt64
+%global with_check 1
 # Generate unit-test rpm
 %global with_unit_test 1
 
@@ -33,19 +33,19 @@
 
 %global provider        github
 %global provider_tld    com
-%global project         cheggaaa
-%global repo            pb
-# https://github.com/cheggaaa/pb
+%global project         spf13
+%global repo            viper
+# https://github.com/spf13/viper
 %global provider_prefix %{provider}.%{provider_tld}/%{project}/%{repo}
 %global import_path     %{provider_prefix}
-%global commit          b65a1501e5c5bc2d1c1a062cbf7bcbfac2510177
+%global commit          382f87b929b84ce13e9c8a375a4b217f224e6c65
 %global shortcommit     %(c=%{commit}; echo ${c:0:7})
 
 Name:           golang-%{provider}-%{project}-%{repo}
-Version:        1.0.15
+Version:        1
 Release:        0.1.git%{shortcommit}%{?dist}
-Summary:        Console progress bar for Golang
-License:        BSD
+Summary:        Go configuration with fangs
+License:        MIT
 URL:            https://%{provider_prefix}
 Source0:        https://%{provider_prefix}/archive/%{commit}/%{repo}-%{shortcommit}.tar.gz
 
@@ -65,12 +65,39 @@ Summary:       %{summary}
 BuildArch:     noarch
 
 %if 0%{?with_check} && ! 0%{?with_bundled}
-BuildRequires: golang(github.com/mattn/go-runewidth)
+BuildRequires: golang(github.com/fsnotify/fsnotify)
+BuildRequires: golang(github.com/hashicorp/hcl)
+BuildRequires: golang(github.com/magiconair/properties)
+BuildRequires: golang(github.com/mitchellh/mapstructure)
+BuildRequires: golang(github.com/pelletier/go-toml)
+BuildRequires: golang(github.com/spf13/afero)
+BuildRequires: golang(github.com/spf13/cast)
+# https://github.com/minishift/minishift/issues/827
+#BuildRequires: golang(github.com/spf13/jwalterweatherman)
+BuildRequires:  golang(github.com/spf13/jWalterWeatherman)
+BuildRequires: golang(github.com/spf13/pflag)
+# Not used by minishift?
+#BuildRequires: golang(github.com/xordataexchange/crypt/config)
+BuildRequires: golang(gopkg.in/yaml.v2)
 %endif
 
-Requires:      golang(github.com/mattn/go-runewidth)
+Requires:      golang(github.com/fsnotify/fsnotify)
+Requires:      golang(github.com/hashicorp/hcl)
+Requires:      golang(github.com/magiconair/properties)
+Requires:      golang(github.com/mitchellh/mapstructure)
+Requires:      golang(github.com/pelletier/go-toml)
+Requires:      golang(github.com/spf13/afero)
+Requires:      golang(github.com/spf13/cast)
+# https://github.com/minishift/minishift/issues/827
+#Requires:      golang(github.com/spf13/jwalterweatherman)
+Requires:      golang(github.com/spf13/jwalterweatherman)
+Requires:      golang(github.com/spf13/pflag)
+# Not used by minishift?
+#Requires:      golang(github.com/xordataexchange/crypt/config)
+Requires:      golang(gopkg.in/yaml.v2)
 
 Provides:      golang(%{import_path}) = %{version}-%{release}
+Provides:      golang(%{import_path}/remote) = %{version}-%{release}
 
 %description devel
 %{summary}
@@ -92,12 +119,10 @@ Summary:         Unit tests for %{name} package
 Requires:        %{name}-devel = %{version}-%{release}
 
 %if 0%{?with_check} && ! 0%{?with_bundled}
-BuildRequires: golang(github.com/fatih/color)
-BuildRequires: golang(github.com/mattn/go-colorable)
+BuildRequires: golang(github.com/stretchr/testify/assert)
 %endif
 
-Requires:      golang(github.com/fatih/color)
-Requires:      golang(github.com/mattn/go-colorable)
+Requires:      golang(github.com/stretchr/testify/assert)
 
 %description unit-test-devel
 %{summary}
@@ -108,6 +133,12 @@ providing packages with %{import_path} prefix.
 
 %prep
 %setup -q -n %{repo}-%{commit}
+# https://github.com/minishift/minishift/issues/827
+for file in `find . -type f`;
+do
+    sed -i 's|jwalterweatherman|jWalterWeatherman|' $file
+done
+
 
 %build
 %install
@@ -185,6 +216,6 @@ export GOPATH=%{buildroot}/%{gopath}:%{gopath}
 %endif
 
 %changelog
-* Mon Apr 24 2017 Marcin Dulak <Marcin.Dulak@gmail.com> - 1.0.15-0.1.gitb65a150
+* Mon May 12 2017 Marcin Dulak <Marcin.Dulak@gmail.com> - 1-0.1.git382f87b
 - First package for Fedora
 

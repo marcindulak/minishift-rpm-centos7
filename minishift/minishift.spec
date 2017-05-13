@@ -1,7 +1,7 @@
 %if 0%{?fedora}
 %global with_devel 1
 %global with_bundled 1
-%global with_debug 1
+%global with_debug 0
 %global with_check 1
 %global with_unit_test 1
 %else
@@ -27,7 +27,7 @@
 # https://github.com/minishift/minishift
 %global provider_prefix %{provider}.%{provider_tld}/%{project}/%{repo}
 %global import_path     %{provider_prefix}
-%global commit          cebec68fcf03ae5b5a9c0b808178b542c17215a7
+%global commit          106cf72c58402060cabb224537048aff3e8fcaaf
 %global shortcommit     %(c=%{commit}; echo ${c:0:7})
 
 Name:           %{repo}
@@ -39,6 +39,8 @@ URL:            https://%{provider_prefix}
 Source0:        https://%{provider_prefix}/archive/%{commit}/%{repo}-%{shortcommit}.tar.gz
 Source1:        glide2specinc.inc
 %include        %{SOURCE1}
+# https://github.com/minishift/minishift/issues/830
+Patch0:         830.patch
 
 BuildRequires:  go-bindata
 BuildRequires:  golang(github.com/fsnotify/fsnotify)
@@ -46,6 +48,7 @@ BuildRequires:  golang(github.com/hashicorp/hcl)
 BuildRequires:  golang(github.com/pborman/uuid)
 BuildRequires:  golang(github.com/pelletier/go-toml)
 BuildRequires:  golang(github.com/spf13/afero)
+# https://github.com/minishift/minishift/issues/827
 BuildRequires:  golang(github.com/spf13/jWalterWeatherman)
 
 
@@ -60,12 +63,14 @@ BuildRequires:  %{?go_compiler:compiler(go-compiler)}%{!?go_compiler:golang}
 
 %prep
 %setup -q -n %{repo}-%{commit}
+%patch0
 
 # https://github.com/marcindulak/minishift-rpm-centos7/issues/5
 for file in `find . -type f`;
 do
     sed -i 's|gopkg.in/cheggaaa/pb.v1|github.com/cheggaaa/pb|' $file
 done
+
 
 # copy the sources
 %global sources %{expand: %{lua: for i=10,18 do print("%{SOURCE"..i.."} ") end}}
@@ -96,9 +101,10 @@ done
 # prepare GOPATH
 mkdir -p ./{bin,pkg,src}
 export GOPATH=`pwd`
-#export PATH=$PATH:$GOPATH/bin
 
-#!!!MDTMP: A terrible hack - minishift/Makefile uses GOPATH for two purposes: 1. GOPATH pointing to to packages locations, 2. GOPATH in the destination path of minishift target binary
+# https://github.com/minishift/minishift/issues/829
+# !!!MDTMP: A terrible hack - minishift/Makefile uses GOPATH for two purposes:
+# 1. GOPATH pointing to to packages locations, 2. GOPATH in the destination path of minishift target binary
 rm -rfv /usr/share/gocode/src/github.com/minishift
 pushd src
 for dir in `find /usr/share/gocode/src -maxdepth 1 -mindepth 1 -type d`;
@@ -107,13 +113,13 @@ do
 done
 popd
 
-mkdir -p src/github.com/minishift/minishift
+mkdir -p src/%{provider_prefix}
 shopt -s extglob
-mv -f !(src) src/github.com/minishift/minishift
-pushd $GOPATH/src/github.com/minishift/minishift
+mv -f !(src) src/%{provider_prefix}
+pushd $GOPATH/src/%{provider_prefix}
 # install budled packages under vendor directory
 mkdir -v vendor
-export VENDOR=$GOPATH/src/github.com/minishift/minishift/vendor
+export VENDOR=$GOPATH/src/%{provider_prefix}/vendor
 pushd bundled
 %global import_paths %{expand: %{lua: for i=10,18 do print("%{import_path_"..i.."} ") end}}
 for import_path in %{import_paths};
@@ -141,30 +147,33 @@ popd
 
 %build
 export GOPATH=`pwd`
-cd src/github.com/minishift/minishift
-# skip go get of go-bindata - we use the RPM
-sed -i 's|go get -u github.com/jteeuwen/go-bindata/...|echo skipped go-bindata|' Makefile
-make
-%quit
+cd src/%{provider_prefix}
+# we know test fail
+GO_BINDATA=/usr/bin/go-bindata make
+! GO_BINDATA=/usr/bin/go-bindata make test
+
 
 %install
+install -d -p %{buildroot}%{_bindir}
+install -p -m 644 bin/%{project} %{buildroot}%{_bindir}
 
-%post
-%systemd_post %{repo}
 
-%preun
-%systemd_preun %{repo}
+%check
+%if 0%{?with_check}
+export GOPATH=`pwd`
+go test -v %{provider_prefix}
+%endif
 
-%postun
-%systemd_postun_with_restart %{repo}
 
 #define license tag if not already defined
 %{!?_licensedir:%global license %doc}
 
 %files
-%license LICENSE
-%doc README.md 
+%{_bindir}/%{project}
+%license src/%{provider_prefix}/LICENSE
+%doc src/%{provider_prefix}/README.adoc
+
 
 %changelog
-* Mon Apr 24 2017 Marcin Dulak <Marcin.Dulak@gmail.com> - 1.0.0-0.1.gitcebec68
+* Sat May 13 2017 Marcin Dulak <Marcin.Dulak@gmail.com> - 1.0.0-0.1.git106cf72
 - First package for Fedora

@@ -19,7 +19,7 @@
 # Build with debug info rpm
 %global with_debug 0
 # Run tests in check section
-# example_copy_test.go:12:2: cannot find package "gopkg.in/cheggaaa/pb.v1"
+# response.generated.go:167: r.EncodeEnd undefined (type codec.encDriver has no field or method EncodeEnd)
 %global with_check 0
 # Generate unit-test rpm
 %global with_unit_test 1
@@ -33,19 +33,19 @@
 
 %global provider        github
 %global provider_tld    com
-%global project         cheggaaa
-%global repo            pb
-# https://github.com/cheggaaa/pb
+%global project         xordataexchange
+%global repo            crypt
+# https://github.com/xordataexchange/crypt
 %global provider_prefix %{provider}.%{provider_tld}/%{project}/%{repo}
 %global import_path     %{provider_prefix}
-%global commit          b65a1501e5c5bc2d1c1a062cbf7bcbfac2510177
+%global commit          749e360c8f236773f28fc6d3ddfce4a470795227
 %global shortcommit     %(c=%{commit}; echo ${c:0:7})
 
 Name:           golang-%{provider}-%{project}-%{repo}
-Version:        1.0.15
+Version:        0.0.2
 Release:        0.1.git%{shortcommit}%{?dist}
-Summary:        Console progress bar for Golang
-License:        BSD
+Summary:        Store and retrieve encrypted configs from etcd or consul
+License:        MIT
 URL:            https://%{provider_prefix}
 Source0:        https://%{provider_prefix}/archive/%{commit}/%{repo}-%{shortcommit}.tar.gz
 
@@ -65,12 +65,21 @@ Summary:       %{summary}
 BuildArch:     noarch
 
 %if 0%{?with_check} && ! 0%{?with_bundled}
-BuildRequires: golang(github.com/mattn/go-runewidth)
+BuildRequires: golang(github.com/armon/consul-api)
+BuildRequires: golang(github.com/coreos/go-etcd/etcd)
+BuildRequires: golang(golang.org/x/crypto/openpgp)
 %endif
 
-Requires:      golang(github.com/mattn/go-runewidth)
+Requires:      golang(github.com/armon/consul-api)
+Requires:      golang(github.com/coreos/go-etcd/etcd)
+Requires:      golang(golang.org/x/crypto/openpgp)
 
-Provides:      golang(%{import_path}) = %{version}-%{release}
+Provides:      golang(%{import_path}/backend) = %{version}-%{release}
+Provides:      golang(%{import_path}/backend/consul) = %{version}-%{release}
+Provides:      golang(%{import_path}/backend/etcd) = %{version}-%{release}
+Provides:      golang(%{import_path}/backend/mock) = %{version}-%{release}
+Provides:      golang(%{import_path}/config) = %{version}-%{release}
+Provides:      golang(%{import_path}/encoding/secconf) = %{version}-%{release}
 
 %description devel
 %{summary}
@@ -92,12 +101,8 @@ Summary:         Unit tests for %{name} package
 Requires:        %{name}-devel = %{version}-%{release}
 
 %if 0%{?with_check} && ! 0%{?with_bundled}
-BuildRequires: golang(github.com/fatih/color)
-BuildRequires: golang(github.com/mattn/go-colorable)
 %endif
 
-Requires:      golang(github.com/fatih/color)
-Requires:      golang(github.com/mattn/go-colorable)
 
 %description unit-test-devel
 %{summary}
@@ -164,7 +169,8 @@ export GOPATH=%{buildroot}/%{gopath}:%{gopath}
 %global gotest go test
 %endif
 
-%gotest %{import_path}
+%gotest %{import_path}/config
+%gotest %{import_path}/encoding/secconf
 %endif
 
 #define license tag if not already defined
@@ -185,6 +191,6 @@ export GOPATH=%{buildroot}/%{gopath}:%{gopath}
 %endif
 
 %changelog
-* Mon Apr 24 2017 Marcin Dulak <Marcin.Dulak@gmail.com> - 1.0.15-0.1.gitb65a150
+* Mon May 12 2017 Marcin Dulak <Marcin.Dulak@gmail.com> - 1-0.1.git749e360
 - First package for Fedora
 

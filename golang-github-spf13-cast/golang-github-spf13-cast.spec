@@ -19,8 +19,7 @@
 # Build with debug info rpm
 %global with_debug 0
 # Run tests in check section
-# example_copy_test.go:12:2: cannot find package "gopkg.in/cheggaaa/pb.v1"
-%global with_check 0
+%global with_check 1
 # Generate unit-test rpm
 %global with_unit_test 1
 
@@ -33,19 +32,19 @@
 
 %global provider        github
 %global provider_tld    com
-%global project         cheggaaa
-%global repo            pb
-# https://github.com/cheggaaa/pb
+%global project         spf13
+%global repo            cast
+# https://github.com/spf13/cast
 %global provider_prefix %{provider}.%{provider_tld}/%{project}/%{repo}
 %global import_path     %{provider_prefix}
-%global commit          b65a1501e5c5bc2d1c1a062cbf7bcbfac2510177
+%global commit          acbeb36b902d72a7a4c18e8f3241075e7ab763e4
 %global shortcommit     %(c=%{commit}; echo ${c:0:7})
 
 Name:           golang-%{provider}-%{project}-%{repo}
-Version:        1.0.15
+Version:        9
 Release:        0.1.git%{shortcommit}%{?dist}
-Summary:        Console progress bar for Golang
-License:        BSD
+Summary:        safe and easy casting from one type to another in Go
+License:        MIT
 URL:            https://%{provider_prefix}
 Source0:        https://%{provider_prefix}/archive/%{commit}/%{repo}-%{shortcommit}.tar.gz
 
@@ -65,10 +64,8 @@ Summary:       %{summary}
 BuildArch:     noarch
 
 %if 0%{?with_check} && ! 0%{?with_bundled}
-BuildRequires: golang(github.com/mattn/go-runewidth)
 %endif
 
-Requires:      golang(github.com/mattn/go-runewidth)
 
 Provides:      golang(%{import_path}) = %{version}-%{release}
 
@@ -92,12 +89,10 @@ Summary:         Unit tests for %{name} package
 Requires:        %{name}-devel = %{version}-%{release}
 
 %if 0%{?with_check} && ! 0%{?with_bundled}
-BuildRequires: golang(github.com/fatih/color)
-BuildRequires: golang(github.com/mattn/go-colorable)
+BuildRequires: golang(github.com/stretchr/testify/assert)
 %endif
 
-Requires:      golang(github.com/fatih/color)
-Requires:      golang(github.com/mattn/go-colorable)
+Requires:      golang(github.com/stretchr/testify/assert)
 
 %description unit-test-devel
 %{summary}
@@ -185,6 +180,6 @@ export GOPATH=%{buildroot}/%{gopath}:%{gopath}
 %endif
 
 %changelog
-* Mon Apr 24 2017 Marcin Dulak <Marcin.Dulak@gmail.com> - 1.0.15-0.1.gitb65a150
+* Mon May 12 2017 Marcin Dulak <Marcin.Dulak@gmail.com> - 9-0.1.gitacbeb36
 - First package for Fedora
 

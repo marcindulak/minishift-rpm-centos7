@@ -19,7 +19,7 @@
 # Build with debug info rpm
 %global with_debug 0
 # Run tests in check section
-# example_copy_test.go:12:2: cannot find package "gopkg.in/cheggaaa/pb.v1"
+# github_test.go:104: Header.Get("Content-Type") returned "application/octet-stream", want "text/plain; charset=utf-8"
 %global with_check 0
 # Generate unit-test rpm
 %global with_unit_test 1
@@ -33,18 +33,18 @@
 
 %global provider        github
 %global provider_tld    com
-%global project         cheggaaa
-%global repo            pb
-# https://github.com/cheggaaa/pb
+%global project         google
+%global repo            go-github
+# https://github.com/google/go-github
 %global provider_prefix %{provider}.%{provider_tld}/%{project}/%{repo}
 %global import_path     %{provider_prefix}
-%global commit          b65a1501e5c5bc2d1c1a062cbf7bcbfac2510177
+%global commit          30a21ee1a3839fb4a408efe331f226b73faac379
 %global shortcommit     %(c=%{commit}; echo ${c:0:7})
 
 Name:           golang-%{provider}-%{project}-%{repo}
-Version:        1.0.15
+Version:        1
 Release:        0.1.git%{shortcommit}%{?dist}
-Summary:        Console progress bar for Golang
+Summary:        Go library for accessing the GitHub API
 License:        BSD
 URL:            https://%{provider_prefix}
 Source0:        https://%{provider_prefix}/archive/%{commit}/%{repo}-%{shortcommit}.tar.gz
@@ -65,12 +65,15 @@ Summary:       %{summary}
 BuildArch:     noarch
 
 %if 0%{?with_check} && ! 0%{?with_bundled}
-BuildRequires: golang(github.com/mattn/go-runewidth)
+BuildRequires: golang(github.com/google/go-querystring/query)
+BuildRequires: golang(google.golang.org/appengine)
 %endif
 
-Requires:      golang(github.com/mattn/go-runewidth)
+Requires:      golang(github.com/google/go-querystring/query)
+Requires:      golang(google.golang.org/appengine)
 
-Provides:      golang(%{import_path}) = %{version}-%{release}
+Provides:      golang(%{import_path}/github) = %{version}-%{release}
+Provides:      golang(%{import_path}/tests/integration) = %{version}-%{release}
 
 %description devel
 %{summary}
@@ -92,12 +95,10 @@ Summary:         Unit tests for %{name} package
 Requires:        %{name}-devel = %{version}-%{release}
 
 %if 0%{?with_check} && ! 0%{?with_bundled}
-BuildRequires: golang(github.com/fatih/color)
-BuildRequires: golang(github.com/mattn/go-colorable)
+BuildRequires: golang(golang.org/x/oauth2)
 %endif
 
-Requires:      golang(github.com/fatih/color)
-Requires:      golang(github.com/mattn/go-colorable)
+Requires:      golang(golang.org/x/oauth2)
 
 %description unit-test-devel
 %{summary}
@@ -164,7 +165,8 @@ export GOPATH=%{buildroot}/%{gopath}:%{gopath}
 %global gotest go test
 %endif
 
-%gotest %{import_path}
+%gotest %{import_path}/github
+%gotest %{import_path}/tests/integration
 %endif
 
 #define license tag if not already defined
@@ -174,17 +176,17 @@ export GOPATH=%{buildroot}/%{gopath}:%{gopath}
 %if 0%{?with_devel}
 %files devel -f devel.file-list
 %license LICENSE
-%doc README.md
+%doc README.md CONTRIBUTING.md AUTHORS
 %dir %{gopath}/src/%{provider}.%{provider_tld}/%{project}
 %endif
 
 %if 0%{?with_unit_test} && 0%{?with_devel}
 %files unit-test-devel -f unit-test-devel.file-list
 %license LICENSE
-%doc README.md
+%doc README.md CONTRIBUTING.md AUTHORS
 %endif
 
 %changelog
-* Mon Apr 24 2017 Marcin Dulak <Marcin.Dulak@gmail.com> - 1.0.15-0.1.gitb65a150
+* Mon May 12 2017 Marcin Dulak <Marcin.Dulak@gmail.com> - 1-0.1.git30a21ee
 - First package for Fedora
 

@@ -19,7 +19,7 @@
 # Build with debug info rpm
 %global with_debug 0
 # Run tests in check section
-# example_copy_test.go:12:2: cannot find package "gopkg.in/cheggaaa/pb.v1"
+# agent_test.go:13: err: Get http://127.0.0.1:8500/v1/agent/self: dial tcp 127.0.0.1:8500: getsockopt: connection refused
 %global with_check 0
 # Generate unit-test rpm
 %global with_unit_test 1
@@ -33,19 +33,19 @@
 
 %global provider        github
 %global provider_tld    com
-%global project         cheggaaa
-%global repo            pb
-# https://github.com/cheggaaa/pb
+%global project         armon
+%global repo            consul-api
+# https://github.com/armon/consul-api
 %global provider_prefix %{provider}.%{provider_tld}/%{project}/%{repo}
 %global import_path     %{provider_prefix}
-%global commit          b65a1501e5c5bc2d1c1a062cbf7bcbfac2510177
+%global commit          dcfedd50ed5334f96adee43fc88518a4f095e15c
 %global shortcommit     %(c=%{commit}; echo ${c:0:7})
 
 Name:           golang-%{provider}-%{project}-%{repo}
-Version:        1.0.15
+Version:        0
 Release:        0.1.git%{shortcommit}%{?dist}
-Summary:        Console progress bar for Golang
-License:        BSD
+Summary:        Golang API client for Consul
+License:        MPLv2.0
 URL:            https://%{provider_prefix}
 Source0:        https://%{provider_prefix}/archive/%{commit}/%{repo}-%{shortcommit}.tar.gz
 
@@ -65,10 +65,8 @@ Summary:       %{summary}
 BuildArch:     noarch
 
 %if 0%{?with_check} && ! 0%{?with_bundled}
-BuildRequires: golang(github.com/mattn/go-runewidth)
 %endif
 
-Requires:      golang(github.com/mattn/go-runewidth)
 
 Provides:      golang(%{import_path}) = %{version}-%{release}
 
@@ -92,12 +90,8 @@ Summary:         Unit tests for %{name} package
 Requires:        %{name}-devel = %{version}-%{release}
 
 %if 0%{?with_check} && ! 0%{?with_bundled}
-BuildRequires: golang(github.com/fatih/color)
-BuildRequires: golang(github.com/mattn/go-colorable)
 %endif
 
-Requires:      golang(github.com/fatih/color)
-Requires:      golang(github.com/mattn/go-colorable)
 
 %description unit-test-devel
 %{summary}
@@ -185,6 +179,6 @@ export GOPATH=%{buildroot}/%{gopath}:%{gopath}
 %endif
 
 %changelog
-* Mon Apr 24 2017 Marcin Dulak <Marcin.Dulak@gmail.com> - 1.0.15-0.1.gitb65a150
+* Mon May 12 2017 Marcin Dulak <Marcin.Dulak@gmail.com> - 0-0.1.gitdcfedd5
 - First package for Fedora
 

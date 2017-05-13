@@ -190,7 +190,7 @@ providing packages with %{import_path} prefix.
 %endif
 
 %prep
-%setup -q -n %{repo}-%{version}-beta
+%setup -q -n %{repo}-%{commit}
 
 %build
 %install
