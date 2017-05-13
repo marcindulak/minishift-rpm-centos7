@@ -112,15 +112,6 @@ yum -y install "golang(github.com/samalba/dockerclient)"
 yum -y install "golang(github.com/spf13/viper)"
 yum -y install "golang(github.com/google/go-github/github)"
 
-# download the dependencies
-pushd minishift
-IFS_SAVE=$IFS
-IFS=$'\n'
-for wget in `grep wget  ~/rpmbuild/SOURCES/glide2specinc.inc`; do cmd=`echo $wget | tr -d '#'`&& eval $cmd; done
-IFS=$IFS_SAVE
-wget -q https://github.com/minishift/minishift/archive/106cf72c58402060cabb224537048aff3e8fcaaf/minishift-106cf72.tar.gz
-mv -fv *.tar.gz ~/rpmbuild/SOURCES
-
 # make test dependencies
 yum -y install "golang(github.com/go-sql-driver/mysql)"
 yum -y install "golang(github.com/Azure/azure-sdk-for-go/storage)"
@@ -172,6 +163,15 @@ yum -y install "golang(github.com/vmware/govcloudair)"
 yum -y install "golang(github.com/vmware/govmomi)"
 yum -y install "golang(github.com/xordataexchange/crypt/config)"
 yum -y install "golang(github.com/DATA-DOG/go-txdb)"
+
+# download the dependencies
+pushd minishift
+IFS_SAVE=$IFS
+IFS=$'\n'
+for wget in `grep wget  ~/rpmbuild/SOURCES/glide2specinc.inc`; do cmd=`echo $wget | tr -d '#'`&& eval $cmd; done
+IFS=$IFS_SAVE
+wget -q https://github.com/minishift/minishift/archive/106cf72c58402060cabb224537048aff3e8fcaaf/minishift-106cf72.tar.gz
+mv -fv *.tar.gz ~/rpmbuild/SOURCES
 
 rpmbuild -bb minishift.spec
 
