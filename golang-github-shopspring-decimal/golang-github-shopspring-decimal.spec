@@ -178,6 +178,6 @@ export GOPATH=%{buildroot}/%{gopath}:%{gopath}
 %endif
 
 %changelog
-* Sun May 14 2017 Marcin Dulak <Marcin.Dulak@gmail.com> - 0-0.1.git3868940
+* Sun May 14 2017 Marcin Dulak 0-0.1.git3868940
 - First package for Fedora
 
