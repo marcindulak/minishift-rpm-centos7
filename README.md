@@ -46,8 +46,8 @@ The workflow:
     $ gofed github2spec --project docker --repo machine --force  # adjust the required commit, and fill in other missing details manually
     $ bash git_annex_br.sh
     $ git commit && git push
-    $ tito tag --keep-version --no-auto-changelog golang-github-docker-machine
-    $ git commit && git push&& git push --tags
+    $ cd golang-github-docker-machine&& tito tag --keep-version --no-auto-changelog
+    $ cd -&& git commit && git push&& git push --tags
     $ # cd golang-github-docker-machine&& tito --srpm  # if you want to build locally SRPM
 
 On `copr` web-interface create `New package` and use the following settings:
