@@ -23,7 +23,7 @@ It can be done using www.vagrantup.com:
         $ vagrant ssh -c "sudo su - -c 'echo baseurl=file:///root/rpmbuild/RPMS >> /etc/yum.repos.d/local.repo'"
         $ vagrant ssh -c "sudo su - -c 'echo gpgcheck=0 >> /etc/yum.repos.d/local.repo'"
 
-Build RPM of the minishift executable:
+Build RPM of the `minishift` executable:
 
         $ vagrant ssh -c "sudo su - -c 'cd /vagrant&& bash build_local.sh'"
 
@@ -57,6 +57,8 @@ The workflow:
       Git directory: golang-github-google-go-github
 
   Note that using `tito` with `git-annex` is currently broken on `copr`: https://bugzilla.redhat.com/show_bug.cgi?id=1426033
+
+  If changing the RPMS sources belonging to `minishift` itself use `git_annex_minishift.sh` instead of `git_annex_br.sh`.
 
 - in order to remove a package and sources, e.g. `golang-github-docker-machine`:
 
