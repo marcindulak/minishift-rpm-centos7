@@ -50,13 +50,13 @@ The workflow:
       $ cd -&& git commit && git push&& git push --tags
       $ # cd golang-github-docker-machine&& tito --srpm  # if you want to build locally SRPM
 
-On `copr` web-interface create `New package` and use the following settings:
+  On `copr` web-interface create `New package` and use the following settings:
 
-    Package name: golang-github-google-go-github
-    Git URL: https://github.com/marcindulak/minishift-rpm-centos7
-    Git directory: golang-github-google-go-github
+      Package name: golang-github-google-go-github
+      Git URL: https://github.com/marcindulak/minishift-rpm-centos7
+      Git directory: golang-github-google-go-github
 
-Note that using `tito` with `git-annex` is currently broken on `copr`: https://bugzilla.redhat.com/show_bug.cgi?id=1426033
+  Note that using `tito` with `git-annex` is currently broken on `copr`: https://bugzilla.redhat.com/show_bug.cgi?id=1426033
 
 - in order to remove a package and sources, e.g. `golang-github-docker-machine`:
 
