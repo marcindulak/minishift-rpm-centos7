@@ -185,6 +185,6 @@ export GOPATH=%{buildroot}/%{gopath}:%{gopath}
 %endif
 
 %changelog
-* Sun May 14 2017 Marcin Dulak <Marcin.Dulak@gmail.com> - 1.0.15-0.1.gitf6ccf21
+* Sun May 14 2017 Marcin Dulak 1.0.15-0.1.gitf6ccf21
 - First package for Fedora
 
