@@ -63,6 +63,12 @@ Note that using `tito` with `git-annex` is currently broken on `copr`: https://b
     $ git annex drop --force golang-github-docker-machine
     $ rm -rf golang-github-docker-machine&& git add golang-github-docker-machine  # and then git commit && git push
 
+Build order on `copr`:
+
+- golang-github-google-go-github
+- golang-github-olekukonko-tablewriter
+- golang-github-inconshreveable-go-update
+
 
 -------
 License
