@@ -61,7 +61,8 @@ Note that using `tito` with `git-annex` is currently broken on `copr`: https://b
 - in order to remove a package and sources, e.g. `golang-github-docker-machine`:
 
       $ git annex drop --force golang-github-docker-machine
-      $ rm -rf golang-github-docker-machine&& git add golang-github-docker-machine  # and then git commit && git push
+      $ rm -rf golang-github-docker-machine&& git add golang-github-docker-machine
+      $ git commit && git push
 
 Build order on `copr`:
 
