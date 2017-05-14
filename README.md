@@ -68,6 +68,22 @@ Build order on `copr`:
 - golang-github-google-go-github
 - golang-github-olekukonko-tablewriter
 - golang-github-inconshreveable-go-update
+- golang-github-pkg-browser
+- golang-github-mattn-go-isatty
+- golang-github-mattn-go-colorable
+- golang-github-fatih-color
+- golang-github-cheggaaa-pb
+- golang-github-samalba-dockerclient
+- golang-github-Azure-go-autorest
+- golang-github-pyr-egoscale
+- golang-github-vmware-govmomi
+- golang-github-armon-consul-api
+- golang-github-satori-uuid
+- golang-github-shopspring-decimal
+- golang-github-xordataexchange-crypt
+- golang-github-Azure-azure-sdk-for-go
+- golang-github-DATA-DOG-go-txdb
+- minishift
 
 
 -------
