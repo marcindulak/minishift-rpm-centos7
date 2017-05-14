@@ -38,7 +38,7 @@
 # https://github.com/google/go-github
 %global provider_prefix %{provider}.%{provider_tld}/%{project}/%{repo}
 %global import_path     %{provider_prefix}
-%global commit          4a42a1def4af554769703e8ac0ce5290c16371a2
+%global commit          30a21ee1a3839fb4a408efe331f226b73faac379
 %global shortcommit     %(c=%{commit}; echo ${c:0:7})
 
 Name:           golang-%{provider}-%{project}-%{repo}
@@ -187,6 +187,6 @@ export GOPATH=%{buildroot}/%{gopath}:%{gopath}
 %endif
 
 %changelog
-* Mon May 12 2017 Marcin Dulak <Marcin.Dulak@gmail.com> - 99-0.1.git4a42a1d
+* Mon May 12 2017 Marcin Dulak <Marcin.Dulak@gmail.com> - 99-0.1.git30a21ee
 - First package for Fedora
 
