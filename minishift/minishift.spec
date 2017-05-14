@@ -155,7 +155,7 @@ GO_BINDATA=/usr/bin/go-bindata make
 
 %install
 install -d -p %{buildroot}%{_bindir}
-install -p -m 644 bin/%{project} %{buildroot}%{_bindir}
+install -p -m 755 bin/%{project} %{buildroot}%{_bindir}
 
 
 %check
