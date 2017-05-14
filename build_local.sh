@@ -160,14 +160,17 @@ yum -y install "golang(github.com/vmware/govmomi)"
 yum -y install "golang(github.com/xordataexchange/crypt/config)"
 yum -y install "golang(github.com/DATA-DOG/go-txdb)"
 
-# download the dependencies
+# download the dependencies under ~/rpmbuild/SOURCES
 pushd minishift
 IFS_SAVE=$IFS
 IFS=$'\n'
-for wget in `grep wget  ~/rpmbuild/SOURCES/glide2specinc.inc`; do cmd=`echo $wget | tr -d '#'`&& eval $cmd; done
+for wget in `grep wget  ~/rpmbuild/SOURCES/glide2specinc.inc`; do
+    cmd=`echo $wget | tr -d '#' | sed 's|-O |-O ~/rpmbuild/SOURCES/|'`
+    echo "$cmd -P ~/rpmbuild/SOURCES"
+    eval "$cmd -P ~/rpmbuild/SOURCES"
+done
 IFS=$IFS_SAVE
-wget -q https://github.com/minishift/minishift/archive/270a4da8a68f96d93895e4aea3534efda868dd15/minishift-270a4da.tar.gz
-mv -fv *.tar.gz ~/rpmbuild/SOURCES
+wget -q https://github.com/minishift/minishift/archive/270a4da8a68f96d93895e4aea3534efda868dd15/minishift-270a4da.tar.gz -P ~/rpmbuild/SOURCES
 
 rpmbuild -bb minishift.spec
 
