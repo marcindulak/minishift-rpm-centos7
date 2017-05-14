@@ -43,12 +43,12 @@ The workflow:
 
 - in order to add a new package to `tito` and sources to `git-annex`, e.g. `golang-github-docker-machine`:
 
-    $ gofed github2spec --project docker --repo machine --force  # adjust the required commit, and fill in other missing details manually
-    $ bash git_annex_br.sh
-    $ git commit && git push
-    $ cd golang-github-docker-machine&& tito tag --keep-version --no-auto-changelog
-    $ cd -&& git commit && git push&& git push --tags
-    $ # cd golang-github-docker-machine&& tito --srpm  # if you want to build locally SRPM
+      $ gofed github2spec --project docker --repo machine --force  # adjust the required commit, and fill in other missing details manually
+      $ bash git_annex_br.sh
+      $ git commit && git push
+      $ cd golang-github-docker-machine&& tito tag --keep-version --no-auto-changelog
+      $ cd -&& git commit && git push&& git push --tags
+      $ # cd golang-github-docker-machine&& tito --srpm  # if you want to build locally SRPM
 
 On `copr` web-interface create `New package` and use the following settings:
 
@@ -60,8 +60,8 @@ Note that using `tito` with `git-annex` is currently broken on `copr`: https://b
 
 - in order to remove a package and sources, e.g. `golang-github-docker-machine`:
 
-    $ git annex drop --force golang-github-docker-machine
-    $ rm -rf golang-github-docker-machine&& git add golang-github-docker-machine  # and then git commit && git push
+      $ git annex drop --force golang-github-docker-machine
+      $ rm -rf golang-github-docker-machine&& git add golang-github-docker-machine  # and then git commit && git push
 
 Build order on `copr`:
 
