@@ -47,7 +47,7 @@ The workflow:
       $ bash git_annex_br.sh
       $ git commit && git push
       $ cd golang-github-docker-machine&& tito tag --keep-version --no-auto-changelog
-      $ cd -&& git commit && git push&& git push --tags
+      $ cd -&& git push&& git push --tags
       $ # cd golang-github-docker-machine&& tito --srpm  # if you want to build locally SRPM
 
   On `copr` web-interface create `New package` and use the following settings:
