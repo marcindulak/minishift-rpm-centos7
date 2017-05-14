@@ -292,6 +292,6 @@ export GOPATH=%{buildroot}/%{gopath}:$(pwd)/vendor:%{gopath}
 %endif
 
 %changelog
-* Sun May 14 2017 Marcin Dulak <Marcin.Dulak@gmail.com> - 0.14.0-0.1.git9bfdc5c
+* Sun May 14 2017 Marcin Dulak 0.14.0-0.1.git9bfdc5c
 - First package for Fedora
 
