@@ -38,7 +38,7 @@
 # https://github.com/cheggaaa/pb
 %global provider_prefix %{provider}.%{provider_tld}/%{project}/%{repo}
 %global import_path     %{provider_prefix}
-%global commit          b65a1501e5c5bc2d1c1a062cbf7bcbfac2510177
+%global commit          f6ccf2184de4dd34495277e38dc19b6e7fbe0ea2
 %global shortcommit     %(c=%{commit}; echo ${c:0:7})
 
 Name:           golang-%{provider}-%{project}-%{repo}
@@ -185,6 +185,6 @@ export GOPATH=%{buildroot}/%{gopath}:%{gopath}
 %endif
 
 %changelog
-* Mon Apr 24 2017 Marcin Dulak <Marcin.Dulak@gmail.com> - 1.0.15-0.1.gitb65a150
+* Sun May 14 2017 Marcin Dulak <Marcin.Dulak@gmail.com> - 1.0.15-0.1.gitf6ccf21
 - First package for Fedora
 

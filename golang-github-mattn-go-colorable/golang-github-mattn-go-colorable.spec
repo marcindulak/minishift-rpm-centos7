@@ -37,11 +37,11 @@
 # https://github.com/mattn/go-colorable
 %global provider_prefix %{provider}.%{provider_tld}/%{project}/%{repo}
 %global import_path     %{provider_prefix}
-%global commit          ded68f7a9561c023e790de24279db7ebf473ea80
+%global commit          d228849504861217f796da67fae4f6e347643f15
 %global shortcommit     %(c=%{commit}; echo ${c:0:7})
 
 Name:           golang-%{provider}-%{project}-%{repo}
-Version:        0
+Version:        0.0.7
 Release:        0.1.git%{shortcommit}%{?dist}
 Summary:        Colorable writer for windows.
 License:        MIT
@@ -180,6 +180,6 @@ export GOPATH=%{buildroot}/%{gopath}:%{gopath}
 %endif
 
 %changelog
-* Mon Apr 24 2017 Marcin Dulak <Marcin.Dulak@gmail.com> - 0-0.1.gitded68f7
+* Mon Apr 24 2017 Marcin Dulak <Marcin.Dulak@gmail.com> - 0.0.7-0.1.gitd228849
 - First package for Fedora
 

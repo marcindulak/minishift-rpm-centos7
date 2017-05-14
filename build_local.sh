@@ -1,12 +1,22 @@
 yum -y update curl curl-devel
 # generate current minishift dependencies
 pushd minishift
+# fetch and modify glide.yaml
 rm -f glide.yaml
-wget -q https://raw.githubusercontent.com/minishift/minishift/master/glide.yaml
+wget -q https://raw.githubusercontent.com/minishift/minishift/270a4da8a68f96d93895e4aea3534efda868dd15/glide.yaml
 # https://github.com/marcindulak/minishift-rpm-centos7/issues/5
 sed -i 's|gopkg.in/cheggaaa/pb.v1|github.com/cheggaaa/pb|' glide.yaml
-# https://github.com/minishift/minishift/issues/814
-sed -i 's|version: ~3.0|version: ~3.0.7|' glide.yaml
+# use the RPM of github.com/jteeuwen/go-bindata https://github.com/minishift/minishift/issues/814
+#sed -i 's|version: ~3.0|version: ~3.0.7|' glide.yaml
+sed -i '/go-bindata/d' glide.yaml
+sed -i '/version: ~3.0$/d' glide.yaml
+# use the RPM of github.com/mitchellh/mapstructure
+sed -i '/version: db1efb556f84b25a0a13a04aad883943538ad2e0$/d' glide.yaml
+# use the RPM of github.com/spf13/viper
+sed -i '/version: 382f87b929b84ce13e9c8a375a4b217f224e6c65$/d' glide.yaml
+# use the RPM of github.com/asaskevich/govalidator
+sed -i '/version: 5$/d' glide.yaml
+# create spec include based on glide.yaml
 yum -y install "python-yaml"
 python glide2specinc.py > ~/rpmbuild/SOURCES/glide2specinc.inc
 cp -fv 830.patch ~/rpmbuild/SOURCES
@@ -16,39 +26,28 @@ yum -y install "compiler(go-compiler)"
 yum -y install "golang(github.com/docker/go-units)"
 
 # Specific versions needed
-# https://github.com/minishift/minishift/issues/828
+# https://github.com/minishift/minishift/issues/893
+# Fedora's 553fda4 is newer than glide.lock's 30a21ee1a3839fb4a408efe331f226b73faac379
+# # github.com/minishift/minishift/pkg/util/github
+# pkg/util/github/github.go:101: not enough arguments in call to client.Repositories.GetReleaseByTag
+# pkg/util/github/github.go:104: not enough arguments in call to client.Repositories.GetLatestRelease
+# pkg/util/github/github.go:123: not enough arguments in call to client.Repositories.DownloadReleaseAsset
+# pkg/util/github/github.go:309: not enough arguments in call to client.Repositories.DownloadReleaseAsset
 spectool -g -R golang-github-google-go-github/golang-github-google-go-github.spec
 rpmbuild -bb golang-github-google-go-github/golang-github-google-go-github.spec
 
+# Fedora's cca8bbc is too old
+# https://bugzilla.redhat.com/show_bug.cgi?id=1320304
+# github.com/minishift/minishift/cmd/minishift/cmd/openshift
+# cmd/minishift/cmd/openshift/service_list.go:48: table.SetBorders undefined (type *tablewriter.Table has no field or method SetBorders)
+# cmd/minishift/cmd/openshift/service_list.go:48: undefined: tablewriter.Border
 spectool -g -R golang-github-olekukonko-tablewriter/golang-github-olekukonko-tablewriter.spec
 rpmbuild -bb golang-github-olekukonko-tablewriter/golang-github-olekukonko-tablewriter.spec
 
-# https://github.com/minishift/minishift/issues/827
-yum -y install "golang(github.com/stretchr/testify/require)"
-spectool -g -R golang-github-spf13-jWalterWeatherman/golang-github-spf13-jWalterWeatherman.spec
-rpmbuild -bb golang-github-spf13-jWalterWeatherman/golang-github-spf13-jWalterWeatherman.spec
-
-spectool -g -R golang-github-magiconair-properties/golang-github-magiconair-properties.spec
-rpmbuild -bb golang-github-magiconair-properties/golang-github-magiconair-properties.spec
-
-# https://github.com/minishift/minishift/issues/828
-spectool -g -R golang-github-spf13-cast/golang-github-spf13-cast.spec
-rpmbuild -bb golang-github-spf13-cast/golang-github-spf13-cast.spec
-
 createrepo ~/rpmbuild/RPMS&& yum clean all --enablerepo=minishift --disablerepo='*'
+yum -y install "golang(github.com/google/go-github/github)"
+yum -y install "golang(github.com/olekukonko/tablewriter)"
 yum -y install "golang(github.com/spf13/cast)"
-yum -y install "golang(github.com/magiconair/properties)"
-yum -y install "golang(github.com/fsnotify/fsnotify)"
-yum -y install "golang(github.com/hashicorp/hcl)"
-yum -y install "golang(github.com/mitchellh/mapstructure)"
-yum -y install "golang(github.com/pelletier/go-toml)"
-yum -y install "golang(github.com/spf13/afero)"
-yum -y install "golang(github.com/spf13/jWalterWeatherman)"
-yum -y install "golang(github.com/spf13/pflag)"
-yum -y install "golang(gopkg.in/yaml.v2)"
-
-spectool -g -R golang-github-spf13-viper/golang-github-spf13-viper.spec
-rpmbuild -bb golang-github-spf13-viper/golang-github-spf13-viper.spec
 
 yum -y install bsdiff
 spectool -g -R golang-github-inconshreveable-go-update/golang-github-inconshreveable-go-update.spec
@@ -76,13 +75,9 @@ yum -y install "golang(github.com/fatih/color)"
 spectool -g -R golang-github-cheggaaa-pb/golang-github-cheggaaa-pb.spec
 rpmbuild -bb golang-github-cheggaaa-pb/golang-github-cheggaaa-pb.spec
 
-spectool -g -R golang-github-asaskevich-govalidator/golang-github-asaskevich-govalidator.spec
-rpmbuild -bb golang-github-asaskevich-govalidator/golang-github-asaskevich-govalidator.spec
-
 createrepo ~/rpmbuild/RPMS&& yum clean all --enablerepo=minishift --disablerepo='*'
 yum -y install "golang(github.com/inconshreveable/go-update)"
 yum -y install "golang(github.com/kardianos/osext)"
-yum -y install "golang(github.com/olekukonko/tablewriter)"
 yum -y install "golang(github.com/pkg/browser)"
 yum -y install "golang(github.com/spf13/cobra)"
 yum -y install "golang(github.com/xeipuuv/gojsonschema)"
@@ -108,9 +103,10 @@ spectool -g -R golang-github-samalba-dockerclient/golang-github-samalba-dockercl
 rpmbuild -bb golang-github-samalba-dockerclient/golang-github-samalba-dockerclient.spec
 
 createrepo ~/rpmbuild/RPMS&& yum clean all --enablerepo=minishift --disablerepo='*'
+yum -y install "golang(github.com/mitchellh/mapstructure)"
 yum -y install "golang(github.com/samalba/dockerclient)"
 yum -y install "golang(github.com/spf13/viper)"
-yum -y install "golang(github.com/google/go-github/github)"
+yum -y install "golang(github.com/asaskevich/govalidator)"
 
 # make test dependencies
 yum -y install "golang(github.com/go-sql-driver/mysql)"
@@ -170,7 +166,7 @@ IFS_SAVE=$IFS
 IFS=$'\n'
 for wget in `grep wget  ~/rpmbuild/SOURCES/glide2specinc.inc`; do cmd=`echo $wget | tr -d '#'`&& eval $cmd; done
 IFS=$IFS_SAVE
-wget -q https://github.com/minishift/minishift/archive/106cf72c58402060cabb224537048aff3e8fcaaf/minishift-106cf72.tar.gz
+wget -q https://github.com/minishift/minishift/archive/270a4da8a68f96d93895e4aea3534efda868dd15/minishift-270a4da.tar.gz
 mv -fv *.tar.gz ~/rpmbuild/SOURCES
 
 rpmbuild -bb minishift.spec

@@ -42,8 +42,8 @@
 %global shortcommit     %(c=%{commit}; echo ${c:0:7})
 
 Name:           golang-%{provider}-%{project}-%{repo}
-Version:        1
-Release:        0.1.git%{shortcommit}%{?dist}
+Version:        0
+Release:        0.6.git%{shortcommit}%{?dist}
 Summary:        ASCII table in golang
 License:        MIT
 URL:            https://%{provider_prefix}
@@ -179,6 +179,6 @@ export GOPATH=%{buildroot}/%{gopath}:%{gopath}
 %endif
 
 %changelog
-* Mon May 12 2017 Marcin Dulak <Marcin.Dulak@gmail.com> - 1-0.1.gitfebf2d3
+* Mon May 12 2017 Marcin Dulak <Marcin.Dulak@gmail.com> - 0-0.6.gitfebf2d3
 - First package for Fedora
 

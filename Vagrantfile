@@ -11,6 +11,8 @@ Vagrant.configure(2) do |config|
   config.vm.define "minishift-rpm-centos7" do |machine|
     machine.vm.provision :shell, :inline => "hostname minishift-rpm-centos7", run: "always"
     machine.vm.provision :shell, :inline => "yum -y install wget git rpm-build spectool createrepo"
+    machine.vm.provision :shell, :inline => "if `cat /etc/redhat-release | grep -qi 'release 7'` && ! rpm -q epel-release; then yum -y install https://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-9.noarch.rpm; fi"
+    machine.vm.provision :shell, :inline => "yum -y install spectool tito"
     machine.vm.provision :shell, :inline => "mkdir -p /root/rpmbuild/{SOURCES,RPMS}"
     machine.vm.provision :shell, :inline => "echo [minishift] > /etc/yum.repos.d/minishift.repo"
     machine.vm.provision :shell, :inline => "echo baseurl=file:///root/rpmbuild/RPMS >> /etc/yum.repos.d/minishift.repo"

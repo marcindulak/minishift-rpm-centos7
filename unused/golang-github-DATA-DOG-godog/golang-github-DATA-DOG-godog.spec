@@ -32,19 +32,19 @@
 
 %global provider        github
 %global provider_tld    com
-%global project         spf13
-%global repo            cast
-# https://github.com/spf13/cast
+%global project         DATA-DOG
+%global repo            godog
+# https://github.com/DATA-DOG/godog
 %global provider_prefix %{provider}.%{provider_tld}/%{project}/%{repo}
 %global import_path     %{provider_prefix}
-%global commit          acbeb36b902d72a7a4c18e8f3241075e7ab763e4
+%global commit          c3f5ce27930fff8efffaaf0acab7f24d5deecdbc
 %global shortcommit     %(c=%{commit}; echo ${c:0:7})
 
 Name:           golang-%{provider}-%{project}-%{repo}
-Version:        9
+Version:        0.6.2
 Release:        0.1.git%{shortcommit}%{?dist}
-Summary:        safe and easy casting from one type to another in Go
-License:        MIT
+Summary:        Cucumber for golang
+License:        BSD
 URL:            https://%{provider_prefix}
 Source0:        https://%{provider_prefix}/archive/%{commit}/%{repo}-%{shortcommit}.tar.gz
 
@@ -68,6 +68,9 @@ BuildArch:     noarch
 
 
 Provides:      golang(%{import_path}) = %{version}-%{release}
+Provides:      golang(%{import_path}/colors) = %{version}-%{release}
+Provides:      golang(%{import_path}/examples) = %{version}-%{release}
+Provides:      golang(%{import_path}/gherkin) = %{version}-%{release}
 
 %description devel
 %{summary}
@@ -89,10 +92,10 @@ Summary:         Unit tests for %{name} package
 Requires:        %{name}-devel = %{version}-%{release}
 
 %if 0%{?with_check} && ! 0%{?with_bundled}
-BuildRequires: golang(github.com/stretchr/testify/assert)
+BuildRequires: golang(github.com/DATA-DOG/go-txdb)
 %endif
 
-Requires:      golang(github.com/stretchr/testify/assert)
+Requires:      golang(github.com/DATA-DOG/go-txdb)
 
 %description unit-test-devel
 %{summary}
@@ -139,6 +142,20 @@ for file in $(find . -iname "*_test.go") ; do
         dirprefix=$(dirname $dirprefix)
     done
 done
+
+# feature files used by tests
+for file in $(find . -iname "*.feature") ; do
+    dirprefix=$(dirname $file)
+    install -d -p %{buildroot}/%{gopath}/src/%{import_path}/$dirprefix
+    cp -pav $file %{buildroot}/%{gopath}/src/%{import_path}/$file
+    echo "%%{gopath}/src/%%{import_path}/$file" >> unit-test-devel.file-list
+
+    while [ "$dirprefix" != "." ]; do
+        echo "%%dir %%{gopath}/src/%%{import_path}/$dirprefix" >> devel.file-list
+        dirprefix=$(dirname $dirprefix)
+    done
+done
+
 %endif
 
 %if 0%{?with_devel}
@@ -160,6 +177,9 @@ export GOPATH=%{buildroot}/%{gopath}:%{gopath}
 %endif
 
 %gotest %{import_path}
+%gotest %{import_path}/examples/api
+%gotest %{import_path}/examples/db
+%gotest %{import_path}/examples/godogs
 %endif
 
 #define license tag if not already defined
@@ -169,17 +189,17 @@ export GOPATH=%{buildroot}/%{gopath}:%{gopath}
 %if 0%{?with_devel}
 %files devel -f devel.file-list
 %license LICENSE
-%doc README.md
+%doc README.md CHANGELOG.md
 %dir %{gopath}/src/%{provider}.%{provider_tld}/%{project}
 %endif
 
 %if 0%{?with_unit_test} && 0%{?with_devel}
 %files unit-test-devel -f unit-test-devel.file-list
 %license LICENSE
-%doc README.md
+%doc README.md CHANGELOG.md
 %endif
 
 %changelog
-* Mon May 12 2017 Marcin Dulak <Marcin.Dulak@gmail.com> - 9-0.1.gitacbeb36
+* Tue Mar 28 2017 Marcin Dulak <Marcin.Dulak@gmail.com> - 0.6.3-0.1.gitc3f5ce2
 - First package for Fedora
 

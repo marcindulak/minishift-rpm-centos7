@@ -38,7 +38,7 @@
 # https://github.com/DATA-DOG/go-txdb
 %global provider_prefix %{provider}.%{provider_tld}/%{project}/%{repo}
 %global import_path     %{provider_prefix}
-%global commit          ca6ebaaaa8271297fab0f1170eadf5c2c80e7629
+%global commit          f1e254a3259d583ea9aeaa49ef37013bc818ab85
 %global shortcommit     %(c=%{commit}; echo ${c:0:7})
 
 Name:           golang-%{provider}-%{project}-%{repo}
@@ -181,6 +181,6 @@ export GOPATH=%{buildroot}/%{gopath}:%{gopath}
 %endif
 
 %changelog
-* Tue Mar 28 2017 Marcin Dulak <Marcin.Dulak@gmail.com> - 0-0.1.gitca6ebaa
+* Tue Mar 28 2017 Marcin Dulak <Marcin.Dulak@gmail.com> - 0-0.1.gitf1e254a
 - First package for Fedora
 

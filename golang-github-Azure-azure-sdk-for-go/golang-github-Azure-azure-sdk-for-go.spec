@@ -45,8 +45,6 @@ Name:           golang-%{provider}-%{project}-%{repo}
 Version:        8.1.1
 Release:        beta.1.git%{shortcommit}%{?dist}
 Summary:        Microsoft Azure SDK for Go
-# Detected licences
-# - *No copyright* Apache (v2.0) at 'LICENSE'
 License:        ASL 2.0
 URL:            https://%{provider_prefix}
 Source0:        https://%{provider_prefix}/archive/%{commit}/%{repo}-%{shortcommit}.tar.gz

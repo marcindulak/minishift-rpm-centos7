@@ -1,6 +1,6 @@
 # Bundled dependencies sources
 %global bundled_source_start 10
-%global bundled_source_end 18
+%global bundled_source_end 14
 
 
 # github.com/docker/machine
@@ -40,15 +40,7 @@ BuildRequires:      golang(github.com/google/go-github/github)
 BuildRequires:      golang(github.com/inconshreveable/go-update)
 
 
-# github.com/mitchellh/mapstructure
-%if ! 0%{?with_bundled}
-BuildRequires:      golang(github.com/mitchellh/mapstructure) = db1efb556f84b25a0a13a04aad883943538ad2e0
-%else
-# Provides:           bundled(golang(github.com/mitchellh/mapstructure)) = db1efb556f84b25a0a13a04aad883943538ad2e0
-Source11:           https://github.com/mitchellh/mapstructure/archive/db1efb556f84b25a0a13a04aad883943538ad2e0/mapstructure-db1efb5.tar.gz
-# wget -q https://github.com/mitchellh/mapstructure/archive/db1efb556f84b25a0a13a04aad883943538ad2e0/mapstructure-db1efb5.tar.gz
-%endif
-%global import_path_11 github.com/mitchellh/mapstructure
+BuildRequires:      golang(github.com/mitchellh/mapstructure)
 
 
 BuildRequires:      golang(github.com/kardianos/osext)
@@ -60,15 +52,7 @@ BuildRequires:      golang(github.com/olekukonko/tablewriter)
 BuildRequires:      golang(github.com/pkg/browser)
 
 
-# github.com/spf13/viper
-%if ! 0%{?with_bundled}
-BuildRequires:      golang(github.com/spf13/viper) = 382f87b929b84ce13e9c8a375a4b217f224e6c65
-%else
-# Provides:           bundled(golang(github.com/spf13/viper)) = 382f87b929b84ce13e9c8a375a4b217f224e6c65
-Source12:           https://github.com/spf13/viper/archive/382f87b929b84ce13e9c8a375a4b217f224e6c65/viper-382f87b.tar.gz
-# wget -q https://github.com/spf13/viper/archive/382f87b929b84ce13e9c8a375a4b217f224e6c65/viper-382f87b.tar.gz
-%endif
-%global import_path_12 github.com/spf13/viper
+BuildRequires:      golang(github.com/spf13/viper)
 
 
 BuildRequires:      golang(github.com/xeipuuv/gojsonschema)
@@ -79,10 +63,10 @@ BuildRequires:      golang(github.com/xeipuuv/gojsonschema)
 BuildRequires:      golang(github.com/blang/semver) = 3.5.0
 %else
 # Provides:           bundled(golang(github.com/blang/semver)) = 3.5.0
-Source13:           https://github.com/blang/semver/archive/v3.5.0.tar.gz#semver-3.5.0.tar.gz
+Source11:           https://github.com/blang/semver/archive/v3.5.0.tar.gz#semver-3.5.0.tar.gz
 # wget -q https://github.com/blang/semver/archive/v3.5.0.tar.gz -O semver-3.5.0.tar.gz
 %endif
-%global import_path_13 github.com/blang/semver
+%global import_path_11 github.com/blang/semver
 
 
 BuildRequires:      golang(github.com/docker/go-units)
@@ -93,21 +77,10 @@ BuildRequires:      golang(github.com/docker/go-units)
 BuildRequires:      golang(github.com/pkg/errors) >= 0.8.0, golang(github.com/pkg/errors) < 1.8.0
 %else
 # Provides:           bundled(golang(github.com/pkg/errors)) = 0.8.0
-Source14:           https://github.com/pkg/errors/archive/v0.8.0.tar.gz#errors-0.8.0.tar.gz
+Source12:           https://github.com/pkg/errors/archive/v0.8.0.tar.gz#errors-0.8.0.tar.gz
 # wget -q https://github.com/pkg/errors/archive/v0.8.0.tar.gz -O errors-0.8.0.tar.gz
 %endif
-%global import_path_14 github.com/pkg/errors
-
-
-# github.com/jteeuwen/go-bindata
-%if ! 0%{?with_bundled}
-BuildRequires:      golang(github.com/jteeuwen/go-bindata) >= 3.0.7, golang(github.com/jteeuwen/go-bindata) < 3.1.0
-%else
-# Provides:           bundled(golang(github.com/jteeuwen/go-bindata)) = 3.0.7
-Source15:           https://github.com/jteeuwen/go-bindata/archive/v3.0.7.tar.gz#go-bindata-3.0.7.tar.gz
-# wget -q https://github.com/jteeuwen/go-bindata/archive/v3.0.7.tar.gz -O go-bindata-3.0.7.tar.gz
-%endif
-%global import_path_15 github.com/jteeuwen/go-bindata
+%global import_path_12 github.com/pkg/errors
 
 
 BuildRequires:      golang(github.com/spf13/cobra/doc)
@@ -125,15 +98,7 @@ BuildRequires:      golang(golang.org/x/oauth2)
 BuildRequires:      golang(github.com/cheggaaa/pb)
 
 
-# github.com/asaskevich/govalidator
-%if ! 0%{?with_bundled}
-BuildRequires:      golang(github.com/asaskevich/govalidator) = 5
-%else
-# Provides:           bundled(golang(github.com/asaskevich/govalidator)) = 5
-Source16:           https://github.com/asaskevich/govalidator/archive/v5.tar.gz#govalidator-5.tar.gz
-# wget -q https://github.com/asaskevich/govalidator/archive/v5.tar.gz -O govalidator-5.tar.gz
-%endif
-%global import_path_16 github.com/asaskevich/govalidator
+BuildRequires:      golang(github.com/asaskevich/govalidator)
 
 
 # github.com/DATA-DOG/godog
@@ -141,10 +106,10 @@ Source16:           https://github.com/asaskevich/govalidator/archive/v5.tar.gz#
 BuildRequires:      golang(github.com/DATA-DOG/godog) = v0.6.2
 %else
 # Provides:           bundled(golang(github.com/DATA-DOG/godog)) = v0.6.2
-Source17:           https://github.com/DATA-DOG/godog/archive/v0.6.2.tar.gz#godog-v0.6.2.tar.gz
+Source13:           https://github.com/DATA-DOG/godog/archive/v0.6.2.tar.gz#godog-v0.6.2.tar.gz
 # wget -q https://github.com/DATA-DOG/godog/archive/v0.6.2.tar.gz -O godog-v0.6.2.tar.gz
 %endif
-%global import_path_17 github.com/DATA-DOG/godog
+%global import_path_13 github.com/DATA-DOG/godog
 
 
 # github.com/golang/glog
@@ -152,9 +117,9 @@ Source17:           https://github.com/DATA-DOG/godog/archive/v0.6.2.tar.gz#godo
 BuildRequires:      golang(github.com/golang/glog) = 335da9dda11408a34b64344f82e9c03779b71673
 %else
 # Provides:           bundled(golang(github.com/golang/glog)) = 335da9dda11408a34b64344f82e9c03779b71673
-Source18:           https://github.com/golang/glog/archive/335da9dda11408a34b64344f82e9c03779b71673/glog-335da9d.tar.gz
+Source14:           https://github.com/golang/glog/archive/335da9dda11408a34b64344f82e9c03779b71673/glog-335da9d.tar.gz
 # wget -q https://github.com/golang/glog/archive/335da9dda11408a34b64344f82e9c03779b71673/glog-335da9d.tar.gz
 %endif
-%global import_path_18 github.com/golang/glog
+%global import_path_14 github.com/golang/glog
 
 

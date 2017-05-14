@@ -42,7 +42,7 @@
 %global shortcommit     %(c=%{commit}; echo ${c:0:7})
 
 Name:           golang-%{provider}-%{project}-%{repo}
-Version:        0.0.2
+Version:        0.0.3
 Release:        0.1.git%{shortcommit}%{?dist}
 Summary:        Store and retrieve encrypted configs from etcd or consul
 License:        MIT
@@ -191,6 +191,6 @@ export GOPATH=%{buildroot}/%{gopath}:%{gopath}
 %endif
 
 %changelog
-* Mon May 12 2017 Marcin Dulak <Marcin.Dulak@gmail.com> - 1-0.1.git749e360
+* Mon May 12 2017 Marcin Dulak <Marcin.Dulak@gmail.com> - 0.0.3-0.1.git749e360
 - First package for Fedora
 

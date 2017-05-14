@@ -43,7 +43,7 @@
 
 Name:           golang-%{provider}-%{project}-%{repo}
 Version:        0
-Release:        0.1.git%{shortcommit}%{?dist}
+Release:        0.4.git%{shortcommit}%{?dist}
 Summary:        Docker client library in Go
 License:        ASL 2.0
 URL:            https://%{provider_prefix}
@@ -204,6 +204,6 @@ export GOPATH=%{buildroot}/%{gopath}:%{gopath}
 %endif
 
 %changelog
-* Tue Mar 28 2017 Marcin Dulak <Marcin.Dulak@gmail.com> - 0-0.1.gita303626
+* Tue Mar 28 2017 Marcin Dulak <Marcin.Dulak@gmail.com> - 0-0.4.gita303626
 - First package for Fedora
 

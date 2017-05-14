@@ -41,7 +41,7 @@
 %global shortcommit     %(c=%{commit}; echo ${c:0:7})
 
 Name:           golang-%{provider}-%{project}-%{repo}
-Version:        0
+Version:        0.0.2
 Release:        0.1.git%{shortcommit}%{?dist}
 Summary:        isatty for golang
 License:        MIT
@@ -180,6 +180,6 @@ export GOPATH=%{buildroot}/%{gopath}:%{gopath}
 %endif
 
 %changelog
-* Mon Apr 24 2017 Marcin Dulak <Marcin.Dulak@gmail.com> - 0-0.1.gitfc9e8d8
+* Mon Apr 24 2017 Marcin Dulak <Marcin.Dulak@gmail.com> - 0.0.2-0.1.gitfc9e8d8e
 - First package for Fedora
 

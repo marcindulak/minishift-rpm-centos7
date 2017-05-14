@@ -27,7 +27,7 @@
 # https://github.com/minishift/minishift
 %global provider_prefix %{provider}.%{provider_tld}/%{project}/%{repo}
 %global import_path     %{provider_prefix}
-%global commit          106cf72c58402060cabb224537048aff3e8fcaaf
+%global commit          270a4da8a68f96d93895e4aea3534efda868dd15
 %global shortcommit     %(c=%{commit}; echo ${c:0:7})
 
 Name:           %{repo}
@@ -73,7 +73,7 @@ done
 
 
 # copy the sources
-%global sources %{expand: %{lua: for i=10,18 do print("%{SOURCE"..i.."} ") end}}
+%global sources %{expand: %{lua: for i=10,14 do print("%{SOURCE"..i.."} ") end}}
 for source in %{sources};
 do
     cp -pv %{_sourcedir}/`basename $(echo ${source} | cut -d'#' -f2)` .
@@ -121,7 +121,7 @@ pushd $GOPATH/src/%{provider_prefix}
 mkdir -v vendor
 export VENDOR=$GOPATH/src/%{provider_prefix}/vendor
 pushd bundled
-%global import_paths %{expand: %{lua: for i=10,18 do print("%{import_path_"..i.."} ") end}}
+%global import_paths %{expand: %{lua: for i=10,14 do print("%{import_path_"..i.."} ") end}}
 for import_path in %{import_paths};
 do
     dir=`basename $(echo ${import_path})`
@@ -175,5 +175,5 @@ go test -v %{provider_prefix}
 
 
 %changelog
-* Sat May 13 2017 Marcin Dulak <Marcin.Dulak@gmail.com> - 1.0.0-0.1.git106cf72
+* Sat May 13 2017 Marcin Dulak <Marcin.Dulak@gmail.com> - 1.0.0-0.1.git270a4da
 - First package for Fedora

@@ -37,11 +37,11 @@
 # https://github.com/vmware/govmomi
 %global provider_prefix %{provider}.%{provider_tld}/%{project}/%{repo}
 %global import_path     %{provider_prefix}
-%global commit          f2b5f4d22362f9de1deac5bcd8ac4d1015cc5b3d
+%global commit          9bfdc5ce62c0585b48b154cc460f8664dcd124c3
 %global shortcommit     %(c=%{commit}; echo ${c:0:7})
 
 Name:           golang-%{provider}-%{project}-%{repo}
-Version:        0.13.0
+Version:        0.14.0
 Release:        0.1.git%{shortcommit}%{?dist}
 Summary:        Go library for the VMware vSphere API
 License:        ASL 2.0
@@ -292,6 +292,6 @@ export GOPATH=%{buildroot}/%{gopath}:$(pwd)/vendor:%{gopath}
 %endif
 
 %changelog
-* Tue Mar 28 2017 Marcin Dulak <Marcin.Dulak@gmail.com> - 0.13.0-0.1.gitf2b5f4d
+* Sun May 14 2017 Marcin Dulak <Marcin.Dulak@gmail.com> - 0.14.0-0.1.git9bfdc5c
 - First package for Fedora
 

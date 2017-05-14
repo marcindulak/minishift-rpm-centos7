@@ -40,11 +40,11 @@
 # https://github.com/docker/machine
 %global provider_prefix %{provider}.%{provider_tld}/%{project}/%{repo}
 %global import_path     %{provider_prefix}
-%global commit          93b7ba6171d5d0fe89279e8651c606df9975f9e5
+%global commit          5b274558ea6ca822c06dd407a4e774a0105c3f60
 %global shortcommit     %(c=%{commit}; echo ${c:0:7})
 
 Name:           golang-%{provider}-%{project}-%{repo}
-Version:        0.10.0
+Version:        0.11.0
 Release:        0.1.git%{shortcommit}%{?dist}
 Summary:        Machine management for a container-centric world
 License:        ASL 2.0
@@ -386,6 +386,6 @@ export GOPATH=%{buildroot}/%{gopath}:$(pwd)/vendor:%{gopath}
 %endif
 
 %changelog
-* Tue Mar 28 2017 Marcin Dulak <Marcin.Dulak@gmail.com> - 0.10.0-0.1.git93b7ba6
+* Sun May 14 2017 Marcin Dulak <Marcin.Dulak@gmail.com> - 0.10.0-0.1.git5b27455
 - First package for Fedora
 

@@ -38,11 +38,11 @@
 # https://github.com/satori/uuid
 %global provider_prefix %{provider}.%{provider_tld}/%{project}/%{repo}
 %global import_path     %{provider_prefix}
-%global commit          5bf94b69c6b68ee1b541973bb8e1144db23a194b
+%global commit          879c5887cd475cd7864858769793b2ceb0d44feb
 %global shortcommit     %(c=%{commit}; echo ${c:0:7})
 
 Name:           golang-%{provider}-%{project}-%{repo}
-Version:        0
+Version:        1.1.0
 Release:        0.1.git%{shortcommit}%{?dist}
 Summary:        UUID package for Go
 License:        MIT
@@ -179,6 +179,6 @@ export GOPATH=%{buildroot}/%{gopath}:%{gopath}
 %endif
 
 %changelog
-* Tue Mar 28 2017 Marcin Dulak <Marcin.Dulak@gmail.com> - 1.8-0.1.git5bf94b6
+* Tue Mar 28 2017 Marcin Dulak <Marcin.Dulak@gmail.com> - 1.1.0-0.1.git879c588
 - First package for Fedora
 

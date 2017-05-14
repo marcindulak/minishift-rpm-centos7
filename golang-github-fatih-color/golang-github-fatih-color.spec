@@ -41,7 +41,7 @@
 %global shortcommit     %(c=%{commit}; echo ${c:0:7})
 
 Name:           golang-%{provider}-%{project}-%{repo}
-Version:        0
+Version:        1.4.1
 Release:        0.1.git%{shortcommit}%{?dist}
 Summary:        Color package for Go (golang)
 License:        MIT
@@ -186,6 +186,6 @@ export GOPATH=%{buildroot}/%{gopath}:$(pwd)/vendor:%{gopath}
 %endif
 
 %changelog
-* Mon Apr 24 2017 Marcin Dulak <Marcin.Dulak@gmail.com> - 0-0.1.git9131ab3
+* Mon Apr 24 2017 Marcin Dulak <Marcin.Dulak@gmail.com> - 1.4.1-0.1.git9131ab3
 - First package for Fedora
 

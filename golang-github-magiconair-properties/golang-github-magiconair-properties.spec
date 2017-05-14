@@ -37,11 +37,11 @@
 # https://github.com/magiconair/properties
 %global provider_prefix %{provider}.%{provider_tld}/%{project}/%{repo}
 %global import_path     %{provider_prefix}
-%global commit          51463bfca2576e06c62a8504b5c0f06d61312647
+%global commit          f917359f079a3759162704eaa8caeec3d01d9f91
 %global shortcommit     %(c=%{commit}; echo ${c:0:7})
 
 Name:           golang-%{provider}-%{project}-%{repo}
-Version:        9
+Version:        1.7.2
 Release:        0.1.git%{shortcommit}%{?dist}
 Summary:        Java properties scanner for Go
 License:        BSD
@@ -180,6 +180,6 @@ export GOPATH=%{buildroot}/%{gopath}:%{gopath}
 %endif
 
 %changelog
-* Mon May 12 2017 Marcin Dulak <Marcin.Dulak@gmail.com> - 9-0.1.git51463bf
+* Mon May 12 2017 Marcin Dulak <Marcin.Dulak@gmail.com> - 1.7.2-0.1.gitf917359
 - First package for Fedora
 

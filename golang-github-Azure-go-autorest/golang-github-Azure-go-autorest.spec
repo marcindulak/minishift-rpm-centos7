@@ -19,9 +19,7 @@
 # Build with debug info rpm
 %global with_debug 0
 # Run tests in check section
-# --- FAIL: TestVersion (0.01s)
-#	version_test.go:22: Declared Version: 7.3.0
-#	version_test.go:28: exit status 128
+# adal/token.go:163: undefined: jwt.MapClaims
 %global with_check 0
 # Generate unit-test rpm
 %global with_unit_test 1
@@ -40,11 +38,11 @@
 # https://github.com/Azure/go-autorest
 %global provider_prefix %{provider}.%{provider_tld}/%{project}/%{repo}
 %global import_path     %{provider_prefix}
-%global commit          ec5f4903f77ed9927ac95b19ab8e44ada64c1356
+%global commit          58f6f26e200fa5dfb40c9cd1c83f3e2c860d779d
 %global shortcommit     %(c=%{commit}; echo ${c:0:7})
 
 Name:           golang-%{provider}-%{project}-%{repo}
-Version:        7.3.0
+Version:        8.0.0
 Release:        0.1.git%{shortcommit}%{?dist}
 Summary:        HTTP request pipeline suitable for use across multiple go-routines
 License:        ASL 2.0
@@ -197,6 +195,6 @@ export GOPATH=%{buildroot}/%{gopath}:%{gopath}
 %endif
 
 %changelog
-* Mon Mar 27 2017 Marcin Dulak <Marcin.Dulak@gmail.com> - 7.3.0-0.1.gitec5f490
+* Sun May 14 2017 Marcin Dulak <Marcin.Dulak@gmail.com> - 8.0.0-0.1.git58f6f26
 - First package for Fedora
 

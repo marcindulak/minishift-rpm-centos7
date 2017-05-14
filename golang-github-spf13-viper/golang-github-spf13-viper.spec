@@ -42,8 +42,8 @@
 %global shortcommit     %(c=%{commit}; echo ${c:0:7})
 
 Name:           golang-%{provider}-%{project}-%{repo}
-Version:        1
-Release:        0.1.git%{shortcommit}%{?dist}
+Version:        0
+Release:        0.5.git%{shortcommit}%{?dist}
 Summary:        Go configuration with fangs
 License:        MIT
 URL:            https://%{provider_prefix}
@@ -216,6 +216,6 @@ export GOPATH=%{buildroot}/%{gopath}:%{gopath}
 %endif
 
 %changelog
-* Mon May 12 2017 Marcin Dulak <Marcin.Dulak@gmail.com> - 1-0.1.git382f87b
+* Mon May 12 2017 Marcin Dulak <Marcin.Dulak@gmail.com> - 0-0.5.git382f87b
 - First package for Fedora
 

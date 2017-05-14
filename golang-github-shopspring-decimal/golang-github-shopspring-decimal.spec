@@ -37,7 +37,7 @@
 # https://github.com/shopspring/decimal
 %global provider_prefix %{provider}.%{provider_tld}/%{project}/%{repo}
 %global import_path     %{provider_prefix}
-%global commit          3526cd0bdb7f64e1178943b7dee81a0cc3d86a69
+%global commit          3868940cdd7294e8db0acf28108a9ace9ff7a36d
 %global shortcommit     %(c=%{commit}; echo ${c:0:7})
 
 Name:           golang-%{provider}-%{project}-%{repo}
@@ -178,6 +178,6 @@ export GOPATH=%{buildroot}/%{gopath}:%{gopath}
 %endif
 
 %changelog
-* Tue Mar 28 2017 Marcin Dulak <Marcin.Dulak@gmail.com> - 0-0.1.git3526cd0
+* Sun May 14 2017 Marcin Dulak <Marcin.Dulak@gmail.com> - 0-0.1.git3868940
 - First package for Fedora
 
