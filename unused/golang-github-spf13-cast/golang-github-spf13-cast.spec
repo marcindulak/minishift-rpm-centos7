@@ -180,6 +180,6 @@ export GOPATH=%{buildroot}/%{gopath}:%{gopath}
 %endif
 
 %changelog
-* Mon May 12 2017 Marcin Dulak <Marcin.Dulak@gmail.com> - 1.1.0-0.1.gitacbeb36
+* Fri May 12 2017 Marcin Dulak <Marcin.Dulak@gmail.com> - 1.1.0-0.1.gitacbeb36
 - First package for Fedora
 

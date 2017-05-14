@@ -179,6 +179,6 @@ export GOPATH=%{buildroot}/%{gopath}:%{gopath}
 %endif
 
 %changelog
-* Mon May 12 2017 Marcin Dulak <Marcin.Dulak@gmail.com> - 0-0.1.gitdcfedd5
+* Fri May 12 2017 Marcin Dulak <Marcin.Dulak@gmail.com> - 0-0.1.gitdcfedd5
 - First package for Fedora
 

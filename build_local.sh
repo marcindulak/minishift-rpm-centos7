@@ -44,7 +44,7 @@ rpmbuild -bb golang-github-google-go-github/golang-github-google-go-github.spec
 spectool -g -R golang-github-olekukonko-tablewriter/golang-github-olekukonko-tablewriter.spec
 rpmbuild -bb golang-github-olekukonko-tablewriter/golang-github-olekukonko-tablewriter.spec
 
-createrepo ~/rpmbuild/RPMS&& yum clean all --enablerepo=minishift --disablerepo='*'
+createrepo ~/rpmbuild/RPMS&& yum clean all --enablerepo=local --disablerepo='*'
 yum -y install "golang(github.com/google/go-github/github)"
 yum -y install "golang(github.com/olekukonko/tablewriter)"
 yum -y install "golang(github.com/spf13/cast)"
@@ -60,22 +60,22 @@ yum -y install "golang(golang.org/x/sys/unix)"
 spectool -g -R golang-github-mattn-go-isatty/golang-github-mattn-go-isatty.spec
 rpmbuild -bb golang-github-mattn-go-isatty/golang-github-mattn-go-isatty.spec
 
-createrepo ~/rpmbuild/RPMS&& yum clean all --enablerepo=minishift --disablerepo='*'
+createrepo ~/rpmbuild/RPMS&& yum clean all --enablerepo=local --disablerepo='*'
 yum -y install "golang(github.com/mattn/go-isatty)"
 spectool -g -R golang-github-mattn-go-colorable/golang-github-mattn-go-colorable.spec
 rpmbuild -bb golang-github-mattn-go-colorable/golang-github-mattn-go-colorable.spec
 
-createrepo ~/rpmbuild/RPMS&& yum clean all --enablerepo=minishift --disablerepo='*'
+createrepo ~/rpmbuild/RPMS&& yum clean all --enablerepo=local --disablerepo='*'
 yum -y install "golang(github.com/mattn/go-colorable)"
 spectool -g -R golang-github-fatih-color/golang-github-fatih-color.spec
 rpmbuild -bb golang-github-fatih-color/golang-github-fatih-color.spec
 
-createrepo ~/rpmbuild/RPMS&& yum clean all --enablerepo=minishift --disablerepo='*'
+createrepo ~/rpmbuild/RPMS&& yum clean all --enablerepo=local --disablerepo='*'
 yum -y install "golang(github.com/fatih/color)"
 spectool -g -R golang-github-cheggaaa-pb/golang-github-cheggaaa-pb.spec
 rpmbuild -bb golang-github-cheggaaa-pb/golang-github-cheggaaa-pb.spec
 
-createrepo ~/rpmbuild/RPMS&& yum clean all --enablerepo=minishift --disablerepo='*'
+createrepo ~/rpmbuild/RPMS&& yum clean all --enablerepo=local --disablerepo='*'
 yum -y install "golang(github.com/inconshreveable/go-update)"
 yum -y install "golang(github.com/kardianos/osext)"
 yum -y install "golang(github.com/pkg/browser)"
@@ -102,7 +102,7 @@ yum -y install "golang(github.com/gorilla/mux)"
 spectool -g -R golang-github-samalba-dockerclient/golang-github-samalba-dockerclient.spec
 rpmbuild -bb golang-github-samalba-dockerclient/golang-github-samalba-dockerclient.spec
 
-createrepo ~/rpmbuild/RPMS&& yum clean all --enablerepo=minishift --disablerepo='*'
+createrepo ~/rpmbuild/RPMS&& yum clean all --enablerepo=local --disablerepo='*'
 yum -y install "golang(github.com/mitchellh/mapstructure)"
 yum -y install "golang(github.com/samalba/dockerclient)"
 yum -y install "golang(github.com/spf13/viper)"
@@ -134,7 +134,7 @@ rpmbuild -bb golang-github-satori-uuid/golang-github-satori-uuid.spec
 spectool -g -R golang-github-shopspring-decimal/golang-github-shopspring-decimal.spec
 rpmbuild -bb golang-github-shopspring-decimal/golang-github-shopspring-decimal.spec
 
-createrepo ~/rpmbuild/RPMS&& yum clean all --enablerepo=minishift --disablerepo='*'
+createrepo ~/rpmbuild/RPMS&& yum clean all --enablerepo=local --disablerepo='*'
 yum -y install "golang(github.com/armon/consul-api)"
 yum -y install "golang(github.com/coreos/go-etcd/etcd)"
 spectool -g -R golang-github-xordataexchange-crypt/golang-github-xordataexchange-crypt.spec
@@ -146,7 +146,7 @@ rpmbuild -bb golang-github-Azure-azure-sdk-for-go/golang-github-Azure-azure-sdk-
 spectool -g -R golang-github-DATA-DOG-go-txdb/golang-github-DATA-DOG-go-txdb.spec
 rpmbuild -bb golang-github-DATA-DOG-go-txdb/golang-github-DATA-DOG-go-txdb.spec
 
-createrepo ~/rpmbuild/RPMS&& yum clean all --enablerepo=minishift --disablerepo='*'
+createrepo ~/rpmbuild/RPMS&& yum clean all --enablerepo=local --disablerepo='*'
 yum -y install "golang(github.com/Azure/azure-sdk-for-go/arm/storage)"
 yum -y install "golang(github.com/Azure/go-autorest/autorest)"
 yum -y install "golang(github.com/aws/aws-sdk-go/aws)"
