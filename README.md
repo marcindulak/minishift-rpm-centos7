@@ -27,9 +27,9 @@ Build RPM of the `minishift` executable:
 
         $ vagrant ssh -c "sudo su - -c 'cd /vagrant&& bash build_local.sh'"
 
-The `build_local.sh` consists of the following stages:
+The [build_local.sh](build_local.sh) performs the following stages:
 
-- extract the `minishift` build dependencies by parsing [`minishift`'s glide.yaml](https://github.com/minishift/minishift/blob/master/glide.yaml) using [glide2specinc.py][https://github.com/marcindulak/minishift-rpm-centos7/blob/master/minishift/glide2specinc.py) and save this information as [glide2specinc.inc][https://github.com/marcindulak/minishift-rpm-centos7/blob/master/minishift/glide2specinc.inc) to be included in the [minishift.spec][https://github.com/marcindulak/minishift-rpm-centos7/blob/master/minishift/minishift.spec) file. Ideally one should use `glide.lock` instead of `glide.yaml` as the former contains more dependencies and all dependencies are versioned by their commit ids in `glide.lock`, but the `glide.lock` contains as of today 44 dependencies vs 20 in `glide.yaml`, and those do not include the dependencies of the dependencies themselves. Therefore I initially decided to rely on the packages explicitly listed in `glide.yaml` and rely on the `Fedora` RPMS for the remaining packages. See discussion [`minishift` #828](https://github.com/minishift/minishift/issues/828).
+- extract the `minishift` build dependencies by parsing [`minishift`'s glide.yaml](https://github.com/minishift/minishift/blob/master/glide.yaml) using [minishift/glide2specinc.py](minishift/glide2specinc.py) and save this information as [minishift/glide2specinc.inc](minishift/glide2specinc.inc) to be included in the [minishift/minishift.spec] file. Ideally one should use `glide.lock` instead of `glide.yaml` as the former contains more dependencies and all dependencies are versioned by their commit ids in `glide.lock`, but the `glide.lock` contains as of today 44 dependencies vs 20 in `glide.yaml`, and those do not include the dependencies of the dependencies themselves. Therefore I initially decided to rely on the packages explicitly listed in `glide.yaml` and rely on the `Fedora` RPMS for the remaining packages. See discussion [`minishift` #828](https://github.com/minishift/minishift/issues/828).
 
 - build and install all the dependencies discovered above, using the spec files included in this repository, plus the dependencies of the `minishift`'s `make test` phase dependencies [`minishift` #895](https://github.com/minishift/minishift/issues/895)
 
@@ -66,7 +66,7 @@ The workflow:
       Git URL: https://github.com/marcindulak/minishift-rpm-centos7
       Git directory: golang-github-google-go-github
 
-  Note that using `tito` with `git-annex` is currently broken on `copr`: https://bugzilla.redhat.com/show_bug.cgi?id=1426033
+  Note that using `tito` with `git-annex` seems currently broken on `copr`: https://bugzilla.redhat.com/show_bug.cgi?id=1450950
 
   If changing the RPMS sources belonging to `minishift` itself use `git_annex_minishift.sh` instead of `git_annex_br.sh`.
 
@@ -76,7 +76,7 @@ The workflow:
       $ rm -rf golang-github-docker-machine&& git add golang-github-docker-machine
       $ git commit && git push
 
-Build order on `copr`:
+Suggested build order on `copr`:
 
 - golang-github-google-go-github
 - golang-github-olekukonko-tablewriter
