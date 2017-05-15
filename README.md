@@ -27,11 +27,11 @@ Build RPM of the `minishift` executable:
 
         $ vagrant ssh -c "sudo su - -c 'cd /vagrant&& bash build_local.sh'"
 
-The [build_local.sh](build_local.sh) performs the following stages:
+[build_local.sh](build_local.sh) performs the following stages:
 
-- extract the `minishift` build dependencies by parsing [`minishift`'s glide.yaml](https://github.com/minishift/minishift/blob/master/glide.yaml) using [minishift/glide2specinc.py](minishift/glide2specinc.py) and save this information as [minishift/glide2specinc.inc](minishift/glide2specinc.inc) to be included in the [minishift/minishift.spec] file. Ideally one should use `glide.lock` instead of `glide.yaml` as the former contains more dependencies and all dependencies are versioned by their commit ids in `glide.lock`, but the `glide.lock` contains as of today 44 dependencies vs 20 in `glide.yaml`, and those do not include the dependencies of the dependencies themselves. Therefore I initially decided to rely on the packages explicitly listed in `glide.yaml` and rely on the `Fedora` RPMS for the remaining packages. See discussion [`minishift` #828](https://github.com/minishift/minishift/issues/828).
+- extract the `minishift` build dependencies by parsing [`minishift`'s glide.yaml](https://github.com/minishift/minishift/blob/master/glide.yaml) using [minishift/glide2specinc.py](minishift/glide2specinc.py) and save this information as [minishift/glide2specinc.inc](minishift/glide2specinc.inc) to be included in the [minishift/minishift.spec](minishift/minishift.spec) file. Ideally one should use `glide.lock` instead of `glide.yaml` as the former contains more dependencies and all the dependencies are versioned by their commit ids in `glide.lock`, but the `glide.lock` file contains as of today 44 dependencies vs 20 in `glide.yaml`, and those do not include the dependencies of the dependencies themselves. Therefore I initially decided to package as RPMS only the dependencies listed explicitly in `glide.yaml` and use the RPMS provided already by `Fedora` for the remaining dependencies. See discussion [`minishift` #828](https://github.com/minishift/minishift/issues/828).
 
-- build and install all the dependencies discovered above, using the spec files included in this repository, plus the dependencies of the `minishift`'s `make test` phase dependencies [`minishift` #895](https://github.com/minishift/minishift/issues/895)
+- build and install all the dependencies discovered above, plus the additional dependencies discovered while running `minishift`'s `make test` [`minishift` #895](https://github.com/minishift/minishift/issues/895).
 
 - download the sources of the `minishift's` dependencies, which are explicitly versioned in the `glide.yaml` file, and the source of `minishift` itself.
 
