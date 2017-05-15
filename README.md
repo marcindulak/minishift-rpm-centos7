@@ -27,6 +27,16 @@ Build RPM of the `minishift` executable:
 
         $ vagrant ssh -c "sudo su - -c 'cd /vagrant&& bash build_local.sh'"
 
+The `build_local.sh` consists of the following stages:
+
+- extract the `minishift` build dependencies by parsing [`minishift`'s glide.yaml](https://github.com/minishift/minishift/blob/master/glide.yaml) using [glide2specinc.py][https://github.com/marcindulak/minishift-rpm-centos7/blob/master/minishift/glide2specinc.py) and save this information as [glide2specinc.inc][https://github.com/marcindulak/minishift-rpm-centos7/blob/master/minishift/glide2specinc.inc) to be included in the [minishift.spec][https://github.com/marcindulak/minishift-rpm-centos7/blob/master/minishift/minishift.spec) file. Ideally one should use `glide.lock` instead of `glide.yaml` as the former contains more dependencies and all dependencies are versioned by their commit ids in `glide.lock`, but the `glide.lock` contains as of today 44 dependencies vs 20 in `glide.yaml`, and those do not include the dependencies of the dependencies themselves. Therefore I initially decided to rely on the packages explicitly listed in `glide.yaml` and rely on the `Fedora` RPMS for the remaining packages. See discussion [`minishift` #828](https://github.com/minishift/minishift/issues/828).
+
+- build and install all the dependencies discovered above, using the spec files included in this repository, plus the dependencies of the `minishift`'s `make test` phase dependencies [`minishift` #895](https://github.com/minishift/minishift/issues/895)
+
+- download the sources of the `minishift's` dependencies, which are explicitly versioned in the `glide.yaml` file, and the source of `minishift` itself.
+
+- build the RPM of `minishift` as **root** user. The requirement for building as **root** is a workaround for [`minishift` #829](https://github.com/minishift/minishift/issues/829). See [minishift.spec#L105](https://github.com/marcindulak/minishift-rpm-centos7/blob/5edb9d8cbe5060b5584e61eb680b96d29dc40fe4/minishift/minishift.spec#L105).
+
 
 ------------------
 Build RPMS on copr
@@ -35,7 +45,7 @@ Build RPMS on copr
 One option to build RPMS on https://copr.fedorainfracloud.org/ is to use https://github.com/dgoodwin/tito
 In order to avoid storing of RPM sources in a git repository https://git-annex.branchable.com/ can be used.
 The initial setup of `git-annex` consists of just `git annex init`.
-Setting up `tito` for `git-annex` consists of `tito init&& sed -i 's/tito.builder.Builder/tito.builder.GitAnnexBuilder/' .tito/tito.props`.
+Setting up `tito` for `git-annex` consists of `tito init` followed by `sed -i 's/tito.builder.Builder/tito.builder.GitAnnexBuilder/' .tito/tito.props`.
 
 See an example here https://m0dlx.com/blog/Reproducible_builds_on_Copr_with_tito_and_git_annex.html
 
