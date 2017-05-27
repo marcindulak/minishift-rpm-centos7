@@ -60,6 +60,10 @@ The workflow:
       $ cd -&& git push&& git push --tags
       $ # cd golang-github-docker-machine&& tito --srpm  # if you want to build locally SRPM
 
+  Push the `git-annex` branch (https://git-annex.branchable.com/tips/centralized_git_repository_tutorial/on_GitHub/)
+
+      $ git push origin master git-annex 
+
   On `copr` web-interface create `New package` and use the following settings:
 
       Package name: golang-github-google-go-github
