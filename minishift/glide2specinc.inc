@@ -28,7 +28,7 @@ BuildRequires:      golang(github.com/docker/machine/libmachine/state) = 0.9.0
 BuildRequires:      golang(github.com/docker/machine/libmachine/swarm) = 0.9.0
 %else
 # Provides:           bundled(golang(github.com/docker/machine)) = 0.9.0
-Source10:           https://github.com/docker/machine/archive/v0.9.0.tar.gz#machine-0.9.0.tar.gz
+Source10:           machine-0.9.0.tar.gz
 # wget -q https://github.com/docker/machine/archive/v0.9.0.tar.gz -O machine-0.9.0.tar.gz
 %endif
 %global import_path_10 github.com/docker/machine
@@ -63,7 +63,7 @@ BuildRequires:      golang(github.com/xeipuuv/gojsonschema)
 BuildRequires:      golang(github.com/blang/semver) = 3.5.0
 %else
 # Provides:           bundled(golang(github.com/blang/semver)) = 3.5.0
-Source11:           https://github.com/blang/semver/archive/v3.5.0.tar.gz#semver-3.5.0.tar.gz
+Source11:           semver-3.5.0.tar.gz
 # wget -q https://github.com/blang/semver/archive/v3.5.0.tar.gz -O semver-3.5.0.tar.gz
 %endif
 %global import_path_11 github.com/blang/semver
@@ -77,7 +77,7 @@ BuildRequires:      golang(github.com/docker/go-units)
 BuildRequires:      golang(github.com/pkg/errors) >= 0.8.0, golang(github.com/pkg/errors) < 1.8.0
 %else
 # Provides:           bundled(golang(github.com/pkg/errors)) = 0.8.0
-Source12:           https://github.com/pkg/errors/archive/v0.8.0.tar.gz#errors-0.8.0.tar.gz
+Source12:           errors-0.8.0.tar.gz
 # wget -q https://github.com/pkg/errors/archive/v0.8.0.tar.gz -O errors-0.8.0.tar.gz
 %endif
 %global import_path_12 github.com/pkg/errors
@@ -106,7 +106,7 @@ BuildRequires:      golang(github.com/asaskevich/govalidator)
 BuildRequires:      golang(github.com/DATA-DOG/godog) = v0.6.2
 %else
 # Provides:           bundled(golang(github.com/DATA-DOG/godog)) = v0.6.2
-Source13:           https://github.com/DATA-DOG/godog/archive/v0.6.2.tar.gz#godog-v0.6.2.tar.gz
+Source13:           godog-v0.6.2.tar.gz
 # wget -q https://github.com/DATA-DOG/godog/archive/v0.6.2.tar.gz -O godog-v0.6.2.tar.gz
 %endif
 %global import_path_13 github.com/DATA-DOG/godog

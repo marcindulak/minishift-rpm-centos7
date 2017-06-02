@@ -29,7 +29,7 @@ def bundled_dependency(package, version, bundled_source_number=0):
         # https://%{provider_prefix}/archive/%{commit}/%{repo}-%{shortcommit}.tar.gz
         source = 'https://github.com/{}/{}/archive/{}/{}-{}.tar.gz'.format(
             username, project, commit, project, shortcommit)
-        uri = 'Source{:02d}:           {}'.format(bundled_source_number, source)
+        uri = 'Source{:02d}:           {}'.format(bundled_source_number, source.split('#')[-1])
         wget = '# wget -q {}'.format(source)
     else:
         # https://github.com/blang/semver/archive/v3.5.0.tar.gz
