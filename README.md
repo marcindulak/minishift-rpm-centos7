@@ -47,7 +47,7 @@ In order to avoid storing of RPM sources in a git repository https://git-annex.b
 The initial setup of `git-annex` consists of just `git annex init`.
 Setting up `tito` for `git-annex` consists of `tito init` followed by `sed -i 's/tito.builder.Builder/tito.builder.GitAnnexBuilder/' .tito/tito.props`.
 
-See an example here https://m0dlx.com/blog/Reproducible_builds_on_Copr_with_tito_and_git_annex.html
+See an example here https://m0dlx.com/blog/Reproducible_builds_on_Copr_with_tito_and_git_annex.html and the discussion https://github.com/domcleal/librarian-puppet-copr/issues/2
 
 The workflow:
 
