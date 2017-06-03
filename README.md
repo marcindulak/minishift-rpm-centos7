@@ -4,6 +4,8 @@ Description
 
 Builds available at https://copr.fedorainfracloud.org/coprs/marcindulak/minishift/
 
+**Note**: only Fedora RPMS available, no CentOS 7 yet!
+
 
 -------------------------------
 Build RPMS locally with Vagrant
