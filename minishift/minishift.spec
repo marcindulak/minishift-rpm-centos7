@@ -48,6 +48,7 @@ BuildRequires:  golang(github.com/hashicorp/hcl)
 BuildRequires:  golang(github.com/pborman/uuid)
 BuildRequires:  golang(github.com/pelletier/go-toml)
 BuildRequires:  golang(github.com/spf13/afero)
+BuildRequires:  docker-devel
 # https://github.com/minishift/minishift/issues/827
 # https://bugzilla.redhat.com/show_bug.cgi?id=1427336
 %if (0%{?fedora} && 0%{?fedora} < 27) || (0%{?rhel} && 0%{?rhel} < 8)
@@ -55,6 +56,23 @@ BuildRequires:  golang(github.com/spf13/jWalterWeatherman)
 %else
 BuildRequires:  golang(github.com/spf13/jwalterweatherman)
 %endif
+BuildRequires:  golang(github.com/samalba/dockerclient)
+
+# make test dependencies
+# https://github.com/minishift/minishift/issues/895
+BuildRequires:  golang(github.com/go-sql-driver/mysql)
+BuildRequires:  golang(github.com/Azure/azure-sdk-for-go/arm/storage)
+BuildRequires:  golang(github.com/Azure/go-autorest/autorest)
+BuildRequires:  golang(github.com/aws/aws-sdk-go/aws)
+BuildRequires:  golang(github.com/codegangsta/cli)
+BuildRequires:  golang(github.com/digitalocean/godo)
+BuildRequires:  golang(github.com/pyr/egoscale/src/egoscale)
+BuildRequires:  golang(github.com/rackspace/gophercloud)
+BuildRequires:  golang(github.com/skarademir/naturalsort)
+BuildRequires:  golang(github.com/vmware/govcloudair)
+BuildRequires:  golang(github.com/vmware/govmomi)
+BuildRequires:  golang(github.com/xordataexchange/crypt/config)
+BuildRequires:  golang(github.com/DATA-DOG/go-txdb)
 
 
 # e.g. el6 has ppc64 arch without gcc-go, so EA tag is required
@@ -112,12 +130,12 @@ export GOPATH=`pwd`
 
 # https://github.com/minishift/minishift/issues/829
 # !!!MDTMP: A terrible hack - minishift/Makefile uses GOPATH for two purposes:
-# 1. GOPATH pointing to to packages locations, 2. GOPATH in the destination path of minishift target binary
+# 1. GOPATH pointing to the packages locations, 2. GOPATH in the destination path of minishift target binary
 rm -rfv /usr/share/gocode/src/github.com/minishift
 pushd src
 for dir in `find /usr/share/gocode/src -maxdepth 1 -mindepth 1 -type d`;
 do
-    ln -s $dir
+    cp -rp $dir .
 done
 popd
 
