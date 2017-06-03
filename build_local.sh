@@ -108,58 +108,6 @@ yum -y install "golang(github.com/samalba/dockerclient)"
 yum -y install "golang(github.com/spf13/viper)"
 yum -y install "golang(github.com/asaskevich/govalidator)"
 
-# make test dependencies
-yum -y install "golang(github.com/go-sql-driver/mysql)"
-yum -y install "golang(github.com/Azure/azure-sdk-for-go/storage)"
-
-yum -y install "golang(github.com/Masterminds/semver)"
-yum -y install "golang(github.com/dgrijalva/jwt-go)"
-yum -y install "golang(github.com/stretchr/testify/require)"
-spectool -g -R golang-github-Azure-go-autorest/golang-github-Azure-go-autorest.spec
-rpmbuild -bb golang-github-Azure-go-autorest/golang-github-Azure-go-autorest.spec
-
-spectool -g -R golang-github-pyr-egoscale/golang-github-pyr-egoscale.spec
-rpmbuild -bb golang-github-pyr-egoscale/golang-github-pyr-egoscale.spec
-
-yum -y install "golang(github.com/davecgh/go-spew/spew)"
-spectool -g -R golang-github-vmware-govmomi/golang-github-vmware-govmomi.spec
-rpmbuild -bb golang-github-vmware-govmomi/golang-github-vmware-govmomi.spec
-
-spectool -g -R golang-github-armon-consul-api/golang-github-armon-consul-api.spec
-rpmbuild -bb golang-github-armon-consul-api/golang-github-armon-consul-api.spec
-
-spectool -g -R golang-github-satori-uuid/golang-github-satori-uuid.spec
-rpmbuild -bb golang-github-satori-uuid/golang-github-satori-uuid.spec
-
-spectool -g -R golang-github-shopspring-decimal/golang-github-shopspring-decimal.spec
-rpmbuild -bb golang-github-shopspring-decimal/golang-github-shopspring-decimal.spec
-
-createrepo ~/rpmbuild/RPMS&& yum clean all --enablerepo=local --disablerepo='*'
-yum -y install "golang(github.com/armon/consul-api)"
-yum -y install "golang(github.com/coreos/go-etcd/etcd)"
-spectool -g -R golang-github-xordataexchange-crypt/golang-github-xordataexchange-crypt.spec
-rpmbuild -bb golang-github-xordataexchange-crypt/golang-github-xordataexchange-crypt.spec
-
-spectool -g -R golang-github-Azure-azure-sdk-for-go/golang-github-Azure-azure-sdk-for-go.spec
-rpmbuild -bb golang-github-Azure-azure-sdk-for-go/golang-github-Azure-azure-sdk-for-go.spec
-
-spectool -g -R golang-github-DATA-DOG-go-txdb/golang-github-DATA-DOG-go-txdb.spec
-rpmbuild -bb golang-github-DATA-DOG-go-txdb/golang-github-DATA-DOG-go-txdb.spec
-
-createrepo ~/rpmbuild/RPMS&& yum clean all --enablerepo=local --disablerepo='*'
-yum -y install "golang(github.com/Azure/azure-sdk-for-go/arm/storage)"
-yum -y install "golang(github.com/Azure/go-autorest/autorest)"
-yum -y install "golang(github.com/aws/aws-sdk-go/aws)"
-yum -y install "golang(github.com/codegangsta/cli)"
-yum -y install "golang(github.com/digitalocean/godo)"
-yum -y install "golang(github.com/pyr/egoscale/src/egoscale)"
-yum -y install "golang(github.com/rackspace/gophercloud)"
-yum -y install "golang(github.com/skarademir/naturalsort)"
-yum -y install "golang(github.com/vmware/govcloudair)"
-yum -y install "golang(github.com/vmware/govmomi)"
-yum -y install "golang(github.com/xordataexchange/crypt/config)"
-yum -y install "golang(github.com/DATA-DOG/go-txdb)"
-
 # download the dependencies under ~/rpmbuild/SOURCES
 pushd minishift
 IFS_SAVE=$IFS

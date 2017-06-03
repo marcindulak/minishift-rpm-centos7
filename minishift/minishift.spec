@@ -56,22 +56,6 @@ BuildRequires:  golang(github.com/spf13/jwalterweatherman)
 %endif
 BuildRequires:  golang(github.com/samalba/dockerclient)
 
-# make test dependencies
-# https://github.com/minishift/minishift/issues/895
-BuildRequires:  golang(github.com/go-sql-driver/mysql)
-BuildRequires:  golang(github.com/Azure/azure-sdk-for-go/arm/storage)
-BuildRequires:  golang(github.com/Azure/go-autorest/autorest)
-BuildRequires:  golang(github.com/aws/aws-sdk-go/aws)
-BuildRequires:  golang(github.com/codegangsta/cli)
-BuildRequires:  golang(github.com/digitalocean/godo)
-BuildRequires:  golang(github.com/pyr/egoscale/src/egoscale)
-BuildRequires:  golang(github.com/rackspace/gophercloud)
-BuildRequires:  golang(github.com/skarademir/naturalsort)
-BuildRequires:  golang(github.com/vmware/govcloudair)
-BuildRequires:  golang(github.com/vmware/govmomi)
-BuildRequires:  golang(github.com/xordataexchange/crypt/config)
-BuildRequires:  golang(github.com/DATA-DOG/go-txdb)
-
 # e.g. el6 has ppc64 arch without gcc-go, so EA tag is required
 ExclusiveArch:  %{?go_arches:%{go_arches}}%{!?go_arches:%{ix86} x86_64 aarch64 %{arm}}
 # If go_compiler is not set to 1, there is no virtual provide. Use golang instead.
@@ -178,8 +162,7 @@ rm -rf bundled
 export GOPATH=`pwd`
 cd src/%{provider_prefix}
 GO_BINDATA=/usr/bin/go-bindata make
-# assume make test fails
-! GO_BINDATA=/usr/bin/go-bindata make test
+GO_BINDATA=/usr/bin/go-bindata make test
 
 
 %install
