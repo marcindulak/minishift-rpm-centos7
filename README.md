@@ -37,7 +37,7 @@ Build RPM of the `minishift` executable:
 
 - download the sources of the `minishift's` dependencies, which are explicitly versioned in the [glide.yaml](https://github.com/minishift/minishift/blob/master/glide.yaml) file, and the source of `minishift` itself.
 
-- build the RPM of `minishift` as **root** user. The requirement for building as **root** is a workaround for [`minishift` #829](https://github.com/minishift/minishift/issues/829). See [minishift.spec#L105](https://github.com/marcindulak/minishift-rpm-centos7/blob/5edb9d8cbe5060b5584e61eb680b96d29dc40fe4/minishift/minishift.spec#L105).
+- build the RPM of `minishift`.
 
 
 ------------------

@@ -12,13 +12,11 @@
 %global with_unit_test 0
 %endif
 
-
 %if 0%{?with_debug}
 %global _dwz_low_mem_die_limit 0
 %else
 %global debug_package   %{nil}
 %endif
-
 
 %global provider        github
 %global provider_tld    com
@@ -74,11 +72,11 @@ BuildRequires:  golang(github.com/vmware/govmomi)
 BuildRequires:  golang(github.com/xordataexchange/crypt/config)
 BuildRequires:  golang(github.com/DATA-DOG/go-txdb)
 
-
 # e.g. el6 has ppc64 arch without gcc-go, so EA tag is required
 ExclusiveArch:  %{?go_arches:%{go_arches}}%{!?go_arches:%{ix86} x86_64 aarch64 %{arm}}
 # If go_compiler is not set to 1, there is no virtual provide. Use golang instead.
 BuildRequires:  %{?go_compiler:compiler(go-compiler)}%{!?go_compiler:golang}
+
 
 %description
 %{summary}
@@ -132,7 +130,9 @@ export GOPATH=`pwd`
 # !!!MDTMP: A terrible hack - minishift/Makefile uses GOPATH for two purposes:
 # 1. GOPATH pointing to the packages locations, 2. GOPATH in the destination path of minishift target binary
 rm -rfv /usr/share/gocode/src/github.com/minishift
-pushd src
+# copy ALL GOPATH packages present on the system under vendor directory
+mkdir -v vendor
+pushd vendor
 for dir in `find /usr/share/gocode/src -maxdepth 1 -mindepth 1 -type d`;
 do
     cp -rp $dir .
@@ -143,8 +143,7 @@ mkdir -p src/%{provider_prefix}
 shopt -s extglob
 mv -f !(src) src/%{provider_prefix}
 pushd $GOPATH/src/%{provider_prefix}
-# install budled packages under vendor directory
-mkdir -v vendor
+# install bundled packages under vendor directory
 export VENDOR=$GOPATH/src/%{provider_prefix}/vendor
 pushd bundled
 %global import_paths %{expand: %{lua: for i=10,14 do print("%{import_path_"..i.."} ") end}}
@@ -170,12 +169,16 @@ do
     popd
 done
 popd
+# get rid of the "bundled" directory so make test is not testing those
+# https://github.com/minishift/minishift/issues/895
+rm -rf bundled
+
 
 %build
 export GOPATH=`pwd`
 cd src/%{provider_prefix}
-# we know test fail
 GO_BINDATA=/usr/bin/go-bindata make
+# assume make test fails
 ! GO_BINDATA=/usr/bin/go-bindata make test
 
 
