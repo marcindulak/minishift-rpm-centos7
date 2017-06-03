@@ -49,7 +49,12 @@ BuildRequires:  golang(github.com/pborman/uuid)
 BuildRequires:  golang(github.com/pelletier/go-toml)
 BuildRequires:  golang(github.com/spf13/afero)
 # https://github.com/minishift/minishift/issues/827
+# https://bugzilla.redhat.com/show_bug.cgi?id=1427336
+%if (0%{?fedora} && 0%{?fedora} < 27) || (0%{?rhel} && 0%{?rhel} < 8)
 BuildRequires:  golang(github.com/spf13/jWalterWeatherman)
+%else
+BuildRequires:  golang(github.com/spf13/jwalterweatherman)
+%endif
 
 
 # e.g. el6 has ppc64 arch without gcc-go, so EA tag is required
@@ -93,10 +98,13 @@ done
 popd
 
 # https://github.com/minishift/minishift/issues/827
+# https://bugzilla.redhat.com/show_bug.cgi?id=1427336
+%if (0%{?fedora} && 0%{?fedora} < 27) || (0%{?rhel} && 0%{?rhel} < 8)
 for file in `find . -type f`;
 do
     sed -i 's|jwalterweatherman|jWalterWeatherman|' $file
 done
+%endif
 
 # prepare GOPATH
 mkdir -p ./{bin,pkg,src}
