@@ -39,7 +39,7 @@ def bundled_dependency(package, version, bundled_source_number=0):
             versiontag = 'v' + version
         source = 'https://github.com/{}/{}/archive/{}.tar.gz#{}-{}.tar.gz'.format(
             username, project, versiontag, project, version)
-        uri = 'Source{:02d}:           {}'.format(bundled_source_number, source)
+        uri = 'Source{:02d}:           {}'.format(bundled_source_number, source.split('#')[-1])
         wget = '# wget -q {} -O {}'.format(source.split('#')[0], source.split('#')[1])
     ret.append(uri)
     ret.append(wget)
