@@ -57,6 +57,7 @@ BuildRequires:  golang(github.com/spf13/jwalterweatherman)
 BuildRequires:  golang(github.com/samalba/dockerclient)
 # building minishift relies on .git https://github.com/minishift/minishift/issues/1300
 BuildRequires:  git
+BuildRequires:  golang(github.com/fatih/color)
 
 # e.g. el6 has ppc64 arch without gcc-go, so EA tag is required
 ExclusiveArch:  %{?go_arches:%{go_arches}}%{!?go_arches:%{ix86} x86_64 aarch64 %{arm}}
