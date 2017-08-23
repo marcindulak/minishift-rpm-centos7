@@ -57,7 +57,9 @@ BuildRequires:  golang(github.com/spf13/jwalterweatherman)
 BuildRequires:  golang(github.com/samalba/dockerclient)
 # building minishift relies on .git https://github.com/minishift/minishift/issues/1300
 BuildRequires:  git
+# github.com/briandowns/spinner needs those below
 BuildRequires:  golang(github.com/fatih/color)
+BuildRequires:  golang(github.com/google/go-querystring/query)
 
 # e.g. el6 has ppc64 arch without gcc-go, so EA tag is required
 ExclusiveArch:  %{?go_arches:%{go_arches}}%{!?go_arches:%{ix86} x86_64 aarch64 %{arm}}
@@ -143,10 +145,10 @@ do
     echo "%%dir %%{gopath}/src/${import_path}/." >> ../bundled.file-list
     # find all *.go but no *_test.go files and generate bundled.file-list
     for file in $(find . \( -iname "*.go" -or -iname "*.s" \) \! -iname "*_test.go" -and -not -ipath "*vendor*") ; do
-	dirprefix=$(dirname $file)
-	install -d -p $VENDOR/${import_path}/$dirprefix
-	cp -pav $file $VENDOR/${import_path}/$file
-	echo "%%{gopath}/src/${import_path}/$file" >> ../bundled.file-list
+        dirprefix=$(dirname $file)
+        install -d -p $VENDOR/${import_path}/$dirprefix
+        cp -pav $file $VENDOR/${import_path}/$file
+        echo "%%{gopath}/src/${import_path}/$file" >> ../bundled.file-list
 
         while [ "$dirprefix" != "." ]; do
             echo "%%dir %%{gopath}/src/${import_path}/$dirprefix" >> ../bundled.file-list
