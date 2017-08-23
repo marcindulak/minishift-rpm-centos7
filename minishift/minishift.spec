@@ -25,11 +25,11 @@
 # https://github.com/minishift/minishift
 %global provider_prefix %{provider}.%{provider_tld}/%{project}/%{repo}
 %global import_path     %{provider_prefix}
-%global commit          270a4da8a68f96d93895e4aea3534efda868dd15
+%global commit          0f658ea057b72cac35d6fb22cfa6bec28ef61079
 %global shortcommit     %(c=%{commit}; echo ${c:0:7})
 
 Name:           %{repo}
-Version:        1.0.0
+Version:        1.4.1
 Release:        0.1.git%{shortcommit}%{?dist}
 Summary:        Run a single-node OpenShift cluster inside a VM
 License:        ASL 2.0
@@ -49,12 +49,14 @@ BuildRequires:  golang(github.com/spf13/afero)
 BuildRequires:  docker-devel
 # https://github.com/minishift/minishift/issues/827
 # https://bugzilla.redhat.com/show_bug.cgi?id=1427336
-%if (0%{?fedora} && 0%{?fedora} < 27) || (0%{?rhel} && 0%{?rhel} < 8)
+%if (0%{?fedora} && 0%{?fedora} < 26) || (0%{?rhel} && 0%{?rhel} < 8)
 BuildRequires:  golang(github.com/spf13/jWalterWeatherman)
 %else
 BuildRequires:  golang(github.com/spf13/jwalterweatherman)
 %endif
 BuildRequires:  golang(github.com/samalba/dockerclient)
+# building minishift relies on .git https://github.com/minishift/minishift/issues/1300
+BuildRequires:  git
 
 # e.g. el6 has ppc64 arch without gcc-go, so EA tag is required
 ExclusiveArch:  %{?go_arches:%{go_arches}}%{!?go_arches:%{ix86} x86_64 aarch64 %{arm}}
@@ -67,7 +69,7 @@ BuildRequires:  %{?go_compiler:compiler(go-compiler)}%{!?go_compiler:golang}
 
 
 %prep
-%setup -q -n %{repo}-%{commit}
+%setup -q -n %{repo}-%{shortcommit}
 %patch0
 
 # https://github.com/marcindulak/minishift-rpm-centos7/issues/5
@@ -78,7 +80,7 @@ done
 
 
 # copy the sources
-%global sources %{expand: %{lua: for i=10,14 do print("%{SOURCE"..i.."} ") end}}
+%global sources %{expand: %{lua: for i=10,17 do print("%{SOURCE"..i.."} ") end}}
 for source in %{sources};
 do
     cp -pv %{_sourcedir}/`basename $(echo ${source} | cut -d'#' -f2)` .
@@ -130,7 +132,7 @@ pushd $GOPATH/src/%{provider_prefix}
 # install bundled packages under vendor directory
 export VENDOR=$GOPATH/src/%{provider_prefix}/vendor
 pushd bundled
-%global import_paths %{expand: %{lua: for i=10,14 do print("%{import_path_"..i.."} ") end}}
+%global import_paths %{expand: %{lua: for i=10,17 do print("%{import_path_"..i.."} ") end}}
 for import_path in %{import_paths};
 do
     dir=`basename $(echo ${import_path})`
@@ -187,5 +189,8 @@ go test -v %{provider_prefix}
 
 
 %changelog
+* Wed Aug 23 2017 Marcin Dulak <Marcin.Dulak@gmail.com> - 1.4.1-0.1.git0f658ea
+- upstream update
+
 * Sat May 13 2017 Marcin Dulak <Marcin.Dulak@gmail.com> - 1.0.0-0.1.git270a4da
 - First package for Fedora

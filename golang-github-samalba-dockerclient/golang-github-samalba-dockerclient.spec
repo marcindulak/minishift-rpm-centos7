@@ -38,11 +38,11 @@
 # https://github.com/samalba/dockerclient
 %global provider_prefix %{provider}.%{provider_tld}/%{project}/%{repo}
 %global import_path     %{provider_prefix}
-%global commit          a3036261847103270e9f732509f43b5f98710ace
+%global commit          f661dd4754aa5c52da85d04b5871ee0e11f4b59c
 %global shortcommit     %(c=%{commit}; echo ${c:0:7})
 
 Name:           golang-%{provider}-%{project}-%{repo}
-Version:        0
+Version:        99
 Release:        0.4.git%{shortcommit}%{?dist}
 Summary:        Docker client library in Go
 License:        ASL 2.0
@@ -204,6 +204,6 @@ export GOPATH=%{buildroot}/%{gopath}:%{gopath}
 %endif
 
 %changelog
-* Tue Mar 28 2017 Marcin Dulak <Marcin.Dulak@gmail.com> - 0-0.4.gita303626
+* Tue Mar 28 2017 Marcin Dulak <Marcin.Dulak@gmail.com> - 99-0.4.gitf661dd4
 - First package for Fedora
 

@@ -37,16 +37,16 @@
 # https://github.com/mattn/go-colorable
 %global provider_prefix %{provider}.%{provider_tld}/%{project}/%{repo}
 %global import_path     %{provider_prefix}
-%global commit          d228849504861217f796da67fae4f6e347643f15
+%global commit          167de6bfdfba052fa6b2d3664c8f5272e23c9072
 %global shortcommit     %(c=%{commit}; echo ${c:0:7})
 
 Name:           golang-%{provider}-%{project}-%{repo}
-Version:        0.0.7
+Version:        0.0.9
 Release:        0.1.git%{shortcommit}%{?dist}
 Summary:        Colorable writer for windows.
 License:        MIT
 URL:            https://%{provider_prefix}
-Source0:        https://%{provider_prefix}/archive/%{commit}/%{repo}-%{shortcommit}.tar.gz
+Source0:        https://%{provider_prefix}/archive/v%{version}.tar.gz
 
 # e.g. el6 has ppc64 arch without gcc-go, so EA tag is required
 ExclusiveArch:  %{?go_arches:%{go_arches}}%{!?go_arches:%{ix86} x86_64 aarch64 %{arm}}
@@ -102,7 +102,7 @@ providing packages with %{import_path} prefix.
 %endif
 
 %prep
-%setup -q -n %{repo}-%{commit}
+%setup -q -n %{repo}-%{version}
 
 %build
 %install
@@ -180,6 +180,6 @@ export GOPATH=%{buildroot}/%{gopath}:%{gopath}
 %endif
 
 %changelog
-* Mon Apr 24 2017 Marcin Dulak <Marcin.Dulak@gmail.com> - 0.0.7-0.1.gitd228849
+* Wed Aug 23 2017 Marcin Dulak <Marcin.Dulak@gmail.com> - 0.0.9-0.1.git167de6b
 - First package for Fedora
 

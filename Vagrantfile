@@ -1,7 +1,7 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-BOX = ENV.fetch('BOX', 'bento/fedora-25')
+BOX = ENV.fetch('BOX', 'bento/fedora-26')
 
 Vagrant.configure(2) do |config|
   config.vm.define "minishift-rpm-centos7" do |machine|

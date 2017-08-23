@@ -1,6 +1,6 @@
---- Makefile.orig	2017-05-12 22:21:30.038153237 +0000
-+++ Makefile	2017-05-12 22:23:04.722010353 +0000
-@@ -31,6 +31,12 @@
+--- Makefile.orig	2017-08-23 14:07:38.562355000 +0000
++++ Makefile	2017-08-23 14:09:28.906845630 +0000
+@@ -34,6 +34,11 @@
  GODOG_OPTS ?= ""
  PACKAGES := go list ./... | grep -v /vendor
  SOURCE_DIRS = cmd pkg test
@@ -9,16 +9,15 @@
 +else
 +       GO_BINDATA_PATH := $(GO_BINDATA)
 +endif
-+
  
  # Linker flags
- VERSION_VARIABLES := -X $(REPOPATH)/pkg/version.version=$(MINISHIFT_VERSION) \
-@@ -55,7 +61,7 @@
+ VERSION_VARIABLES := -X $(REPOPATH)/pkg/version.minishiftVersion=$(MINISHIFT_VERSION) \
+@@ -74,7 +79,7 @@
  vendor:
  	glide install -v
  
--$(ADDON_ASSET_FILE): $(GOPATH)/bin/go-bindata vendor
-+$(ADDON_ASSET_FILE): $(GO_BINDATA_PATH) vendor
+-$(ADDON_ASSET_FILE): $(GOPATH)/bin/go-bindata
++$(ADDON_ASSET_FILE): $(GO_BINDATA_PATH)
  	@mkdir -p $(ADDON_BINDATA_DIR)
  	go-bindata $(GO_BINDATA_DEBUG) -prefix $(ADDON_ASSETS) -o $(ADDON_ASSET_FILE) -pkg bindata $(ADDON_ASSETS)/...
  

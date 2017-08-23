@@ -94,7 +94,6 @@ Suggested build order on `copr`:
 - golang-github-mattn-go-isatty
 - golang-github-mattn-go-colorable
 - golang-github-fatih-color
-- golang-github-cheggaaa-pb
 - golang-github-samalba-dockerclient
 - minishift
 
