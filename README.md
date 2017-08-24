@@ -3,7 +3,7 @@ Description
 -----------
 
 **Warning**: this was a PoC project, eventually discouraged by the minishift developers.
-See https://github.com/minishift/minishift/issues/1300 and https://github.com/minishift/minishift/issues/828 for the reasons of abandoning the idea of a debundled minishift RPM.
+See https://github.com/minishift/minishift/issues/1300 for the reasons of abandoning the idea of a debundled minishift RPM.
 
 Builds available at https://copr.fedorainfracloud.org/coprs/marcindulak/minishift/
 
